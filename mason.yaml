@@ -1,0 +1,41 @@
+# Register bricks which can be consumed via the Mason CLI.
+# Run "mason get" to install all registered bricks.
+# To learn more, visit https://docs.brickhub.dev.
+bricks:
+  # Bricks can be imported via version constraint from a registry.
+  # Uncomment the following line to import the "hello" brick from BrickHub.
+  # hello: 0.1.0+1
+  # Bricks can also be imported via remote git url.
+  # Uncomment the following lines to import the "widget" brick from git.
+  screen:
+    git:
+      url: https://github.com/zinct/mason-bricks
+      path: screen
+  cubit:
+    git:
+      url: https://github.com/zinct/mason-bricks
+      path: cubit
+  model:
+    git:
+      url: https://github.com/zinct/mason-bricks
+      path: model
+  entity:
+    git:
+      url: https://github.com/zinct/mason-bricks
+      path: entity
+  repository:
+    git:
+      url: https://github.com/zinct/mason-bricks
+      path: repository
+  remote:
+    git:
+      url: https://github.com/zinct/mason-bricks
+      path: remote
+  local:
+    git:
+      url: https://github.com/zinct/mason-bricks
+      path: local
+  usecase:
+    git:
+      url: https://github.com/zinct/mason-bricks
+      path: usecase
