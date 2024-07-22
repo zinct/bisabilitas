@@ -1,3 +1,4 @@
+import 'package:bisabilitas/flutter_flow/flutter_flow_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -7,7 +8,7 @@ import 'injection_container.dart' as di;
 
 class InitialApp {
   static Future<void> execute() async {
-    _initWidget();
+    await _initWidget();
     _initDependencyInjection();
     await _initIntl();
     await _initialSupabase();
@@ -25,10 +26,12 @@ class InitialApp {
     di.initialize();
   }
 
-  static void _initWidget() {
+  static Future<void> _initWidget() async {
     WidgetsFlutterBinding.ensureInitialized();
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+
+    await FlutterFlowTheme.initialize();
   }
 
   static Future<void> _initIntl() {

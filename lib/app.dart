@@ -1,7 +1,11 @@
 import 'dart:io';
 
 import 'package:bisabilitas/features/auth/presentation/screens/login_screen.dart';
+import 'package:bisabilitas/features/auth/presentation/screens/register_screen.dart';
+import 'package:bisabilitas/features/intro/presentation/screens/onboarding_screen.dart';
 import 'package:bisabilitas/features/intro/presentation/screens/splash_screen.dart';
+import 'package:bisabilitas/features/main/presentation/screens/bookmark_screen.dart';
+import 'package:bisabilitas/features/main/presentation/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -24,11 +28,11 @@ class MainApp extends StatelessWidget {
         return MaterialApp(
           routes: {
             ROUTER.splash: (context) => const SplashScreen(),
-            // ROUTER.intro: (context) => const IntroScreen(),
-            // ROUTER.onboarding: (context) => const OnboardingScreen(),
+            ROUTER.onboarding: (context) => const OnboardingScreen(),
             ROUTER.login: (context) => const LoginScreen(),
-            // ROUTER.register: (context) => const RegisterScreen(),
-            // ROUTER.main: (context) => const MainScreen(),
+            ROUTER.register: (context) => const RegisterScreen(),
+            ROUTER.home: (context) => const HomeScreen(),
+            ROUTER.bookmark: (context) => const BookmarkScreen(),
           },
           initialRoute: ROUTER.splash,
           home: child,

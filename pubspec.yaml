@@ -53,6 +53,9 @@ dependencies:
   cupertino_icons: ^1.0.2
   google_sign_in: ^6.2.1
   supabase_flutter: ^2.5.3
+  google_fonts: 6.1.0
+  font_awesome_flutter: ^10.7.0
+  auto_size_text: ^3.0.0
 
 dev_dependencies:
   flutter_test:
@@ -70,6 +73,13 @@ dev_dependencies:
   image_res: ^0.3.0
   flutter_launcher_icons: ^0.13.1
 
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/launchers/app_launcher.png"
+  remove_alpha_ios: true
+  adaptive_icon_foreground: "assets/launchers/app_launcher.png"
+
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
@@ -81,9 +91,45 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
-  #   - images/a_dot_ham.jpeg
+  assets:
+    - assets/fonts/
+    - assets/images/
+  fonts:
+    - family: "PlusJakartaSans"
+      fonts:
+        - asset: assets/fonts/PlusJakartaSans-ExtraLight.ttf
+          weight: 200
+        - asset: assets/fonts/PlusJakartaSans-ExtraLightItalic.ttf
+          weight: 200
+          style: italic
+        - asset: assets/fonts/PlusJakartaSans-Light.ttf
+          weight: 300
+        - asset: assets/fonts/PlusJakartaSans-LightItalic.ttf
+          weight: 300
+          style: italic
+        - asset: assets/fonts/PlusJakartaSans-Regular.ttf
+        - asset: assets/fonts/PlusJakartaSans-Italic.ttf
+          style: italic
+        - asset: assets/fonts/PlusJakartaSans-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/PlusJakartaSans-MediumItalic.ttf
+          weight: 500
+          style: italic
+        - asset: assets/fonts/PlusJakartaSans-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/PlusJakartaSans-SemiBoldItalic.ttf
+          weight: 600
+          style: italic
+        - asset: assets/fonts/PlusJakartaSans-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/PlusJakartaSans-BoldItalic.ttf
+          weight: 700
+          style: italic
+        - asset: assets/fonts/PlusJakartaSans-ExtraBold.ttf
+          weight: 800
+        - asset: assets/fonts/PlusJakartaSans-ExtraBoldItalic.ttf
+          weight: 800
+          style: italic
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
