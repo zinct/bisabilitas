@@ -1,3 +1,4 @@
+import 'package:bisabilitas/core/constants/network.dart';
 import 'package:flutter/material.dart';
 
 import 'app.dart';
@@ -9,7 +10,9 @@ void main() async {
 
   FlavorConfig(
     flavor: Flavor.development,
-    flavorValues: FlavorValues(),
+    flavorValues: FlavorValues(
+      baseURL: NETWORK.prodBaseURL,
+    ),
   );
 
   runApp(

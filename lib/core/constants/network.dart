@@ -1,4 +1,4 @@
 class NETWORK {
-  static const devBaseURL = 'https://api-piknikaja.appsku.net/v1';
-  static const prodBaseURL = 'https://api-piknikaja.appsku.net/v1';
+  static const devBaseURL = 'http://localhost:8000/api';
+  static const prodBaseURL = 'https://bisabilitas.motionlaboratory.com';
 }

@@ -1,21 +1,14 @@
-import 'dart:io';
-
 import 'package:bisabilitas/features/auth/presentation/screens/login_screen.dart';
 import 'package:bisabilitas/features/auth/presentation/screens/register_screen.dart';
 import 'package:bisabilitas/features/intro/presentation/screens/onboarding_screen.dart';
 import 'package:bisabilitas/features/intro/presentation/screens/splash_screen.dart';
-import 'package:bisabilitas/features/main/presentation/screens/bookmark_screen.dart';
-import 'package:bisabilitas/features/main/presentation/screens/home_screen.dart';
+import 'package:bisabilitas/features/main/presentation/screens/main_screen.dart';
+import 'package:bisabilitas/features/page/presentation/screens/page_detail_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:upgrader/upgrader.dart';
 
-import 'core/constants/locale.dart';
 import 'core/constants/router.dart';
 import 'core/resources/colors.dart';
-import 'core/utils/scroll_behaviour_utils.dart';
-import 'injection_container.dart';
 
 class MainApp extends StatelessWidget {
   const MainApp({Key? key}) : super(key: key);
@@ -23,7 +16,7 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      designSize: const Size(375, 812),
+      designSize: const Size(393, 852),
       builder: (context, child) {
         return MaterialApp(
           routes: {
@@ -31,8 +24,8 @@ class MainApp extends StatelessWidget {
             ROUTER.onboarding: (context) => const OnboardingScreen(),
             ROUTER.login: (context) => const LoginScreen(),
             ROUTER.register: (context) => const RegisterScreen(),
-            ROUTER.home: (context) => const HomeScreen(),
-            ROUTER.bookmark: (context) => const BookmarkScreen(),
+            ROUTER.home: (context) => const MainScreen(),
+            ROUTER.pageDetail: (context) => const PageDetailScreen(),
           },
           initialRoute: ROUTER.splash,
           home: child,

@@ -6,4 +6,5 @@ class ROUTER {
   static const register = 'apps.screen.register';
   static const home = 'apps.screen.home';
   static const bookmark = 'apps.screen.bookmark';
+  static const pageDetail = 'apps.screen.page.detail';
 }

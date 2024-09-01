@@ -1,7 +1,9 @@
 enum Flavor { development, staging, production }
 
 class FlavorValues {
-  FlavorValues();
+  final String baseURL;
+
+  FlavorValues({required this.baseURL});
 }
 
 class FlavorConfig {

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 import 'injection_container.dart' as di;
 
@@ -11,7 +12,7 @@ class InitialApp {
     await _initWidget();
     _initDependencyInjection();
     await _initIntl();
-    await _initialSupabase();
+    await _initHive();
   }
 
   static Future<void> _initialSupabase() async {
@@ -32,6 +33,10 @@ class InitialApp {
         [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
 
     await FlutterFlowTheme.initialize();
+  }
+
+  static Future<void> _initHive() async {
+    return Hive.initFlutter();
   }
 
   static Future<void> _initIntl() {

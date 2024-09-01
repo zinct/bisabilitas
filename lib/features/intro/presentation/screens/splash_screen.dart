@@ -5,8 +5,13 @@
 /// Created by Indra Mahesa https://github.com/zinct
 ///
 
+import 'package:bisabilitas/core/api/api.dart';
+import 'package:bisabilitas/core/constants/hive.dart';
 import 'package:bisabilitas/core/constants/router.dart';
+import 'package:bisabilitas/core/models/base/base_model.dart';
+import 'package:bisabilitas/injection_container.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -19,11 +24,31 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(milliseconds: 1500), () {
-      setState(() {
+    checkCredentials();
+  }
+
+  void checkCredentials() async {
+    try {
+      final box = await Hive.openBox(HIVE.databaseName);
+      final token = box.get(HIVE.tokenData);
+      if (token == null) {
         Navigator.of(context).pushReplacementNamed(ROUTER.onboarding);
-      });
-    });
+      }
+
+      box.put(HIVE.tokenData, token);
+      getIt<Api>().setToken(token);
+
+      final response = await getIt<Api>().get('profile');
+      final model = BaseModel.fromJson(response.data);
+
+      if (model.success ?? false) {
+        Navigator.of(context).pushReplacementNamed(ROUTER.home);
+      } else {
+        Navigator.of(context).pushReplacementNamed(ROUTER.onboarding);
+      }
+    } catch (err) {
+      Navigator.of(context).pushReplacementNamed(ROUTER.onboarding);
+    }
   }
 
   @override

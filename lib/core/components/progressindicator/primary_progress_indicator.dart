@@ -1,3 +1,4 @@
+import 'package:bisabilitas/flutter_flow/flutter_flow_theme.dart';
 import 'package:flutter/material.dart';
 
 import '../../resources/colors.dart';
@@ -10,7 +11,7 @@ class PrimaryProgressIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CircularProgressIndicator(
-      color: color ?? BaseColors.primary,
+      color: color ?? const Color(0xFF995F25),
     );
   }
 }

@@ -12,7 +12,7 @@ part of 'pagination_result.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 PaginationResult<T> _$PaginationResultFromJson<T>(
     Map<String, dynamic> json, T Function(Object?) fromJsonT) {
@@ -84,11 +84,11 @@ class _$PaginationResultCopyWithImpl<T, $Res, $Val extends PaginationResult<T>>
 }
 
 /// @nodoc
-abstract class _$$_PaginationResultCopyWith<T, $Res>
+abstract class _$$PaginationResultImplCopyWith<T, $Res>
     implements $PaginationResultCopyWith<T, $Res> {
-  factory _$$_PaginationResultCopyWith(_$_PaginationResult<T> value,
-          $Res Function(_$_PaginationResult<T>) then) =
-      __$$_PaginationResultCopyWithImpl<T, $Res>;
+  factory _$$PaginationResultImplCopyWith(_$PaginationResultImpl<T> value,
+          $Res Function(_$PaginationResultImpl<T>) then) =
+      __$$PaginationResultImplCopyWithImpl<T, $Res>;
   @override
   @useResult
   $Res call({List<T>? list, PaginationEntity? pagination});
@@ -98,11 +98,11 @@ abstract class _$$_PaginationResultCopyWith<T, $Res>
 }
 
 /// @nodoc
-class __$$_PaginationResultCopyWithImpl<T, $Res>
-    extends _$PaginationResultCopyWithImpl<T, $Res, _$_PaginationResult<T>>
-    implements _$$_PaginationResultCopyWith<T, $Res> {
-  __$$_PaginationResultCopyWithImpl(_$_PaginationResult<T> _value,
-      $Res Function(_$_PaginationResult<T>) _then)
+class __$$PaginationResultImplCopyWithImpl<T, $Res>
+    extends _$PaginationResultCopyWithImpl<T, $Res, _$PaginationResultImpl<T>>
+    implements _$$PaginationResultImplCopyWith<T, $Res> {
+  __$$PaginationResultImplCopyWithImpl(_$PaginationResultImpl<T> _value,
+      $Res Function(_$PaginationResultImpl<T>) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -111,7 +111,7 @@ class __$$_PaginationResultCopyWithImpl<T, $Res>
     Object? list = freezed,
     Object? pagination = freezed,
   }) {
-    return _then(_$_PaginationResult<T>(
+    return _then(_$PaginationResultImpl<T>(
       list: freezed == list
           ? _value._list
           : list // ignore: cast_nullable_to_non_nullable
@@ -126,13 +126,13 @@ class __$$_PaginationResultCopyWithImpl<T, $Res>
 
 /// @nodoc
 @JsonSerializable(genericArgumentFactories: true)
-class _$_PaginationResult<T> implements _PaginationResult<T> {
-  const _$_PaginationResult({final List<T>? list, this.pagination})
+class _$PaginationResultImpl<T> implements _PaginationResult<T> {
+  const _$PaginationResultImpl({final List<T>? list, this.pagination})
       : _list = list;
 
-  factory _$_PaginationResult.fromJson(
+  factory _$PaginationResultImpl.fromJson(
           Map<String, dynamic> json, T Function(Object?) fromJsonT) =>
-      _$$_PaginationResultFromJson(json, fromJsonT);
+      _$$PaginationResultImplFromJson(json, fromJsonT);
 
   final List<T>? _list;
   @override
@@ -153,10 +153,10 @@ class _$_PaginationResult<T> implements _PaginationResult<T> {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_PaginationResult<T> &&
+            other is _$PaginationResultImpl<T> &&
             const DeepCollectionEquality().equals(other._list, _list) &&
             (identical(other.pagination, pagination) ||
                 other.pagination == pagination));
@@ -170,24 +170,24 @@ class _$_PaginationResult<T> implements _PaginationResult<T> {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_PaginationResultCopyWith<T, _$_PaginationResult<T>> get copyWith =>
-      __$$_PaginationResultCopyWithImpl<T, _$_PaginationResult<T>>(
+  _$$PaginationResultImplCopyWith<T, _$PaginationResultImpl<T>> get copyWith =>
+      __$$PaginationResultImplCopyWithImpl<T, _$PaginationResultImpl<T>>(
           this, _$identity);
 
   @override
   Map<String, dynamic> toJson(Object? Function(T) toJsonT) {
-    return _$$_PaginationResultToJson<T>(this, toJsonT);
+    return _$$PaginationResultImplToJson<T>(this, toJsonT);
   }
 }
 
 abstract class _PaginationResult<T> implements PaginationResult<T> {
   const factory _PaginationResult(
       {final List<T>? list,
-      final PaginationEntity? pagination}) = _$_PaginationResult<T>;
+      final PaginationEntity? pagination}) = _$PaginationResultImpl<T>;
 
   factory _PaginationResult.fromJson(
           Map<String, dynamic> json, T Function(Object?) fromJsonT) =
-      _$_PaginationResult<T>.fromJson;
+      _$PaginationResultImpl<T>.fromJson;
 
   @override
   List<T>? get list;
@@ -195,6 +195,6 @@ abstract class _PaginationResult<T> implements PaginationResult<T> {
   PaginationEntity? get pagination;
   @override
   @JsonKey(ignore: true)
-  _$$_PaginationResultCopyWith<T, _$_PaginationResult<T>> get copyWith =>
+  _$$PaginationResultImplCopyWith<T, _$PaginationResultImpl<T>> get copyWith =>
       throw _privateConstructorUsedError;
 }

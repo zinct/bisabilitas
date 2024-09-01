@@ -12,7 +12,7 @@ part of 'pagination_entity.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 PaginationEntity _$PaginationEntityFromJson(Map<String, dynamic> json) {
   return _PaginationEntity.fromJson(json);
@@ -68,22 +68,22 @@ class _$PaginationEntityCopyWithImpl<$Res, $Val extends PaginationEntity>
 }
 
 /// @nodoc
-abstract class _$$_PaginationEntityCopyWith<$Res>
+abstract class _$$PaginationEntityImplCopyWith<$Res>
     implements $PaginationEntityCopyWith<$Res> {
-  factory _$$_PaginationEntityCopyWith(
-          _$_PaginationEntity value, $Res Function(_$_PaginationEntity) then) =
-      __$$_PaginationEntityCopyWithImpl<$Res>;
+  factory _$$PaginationEntityImplCopyWith(_$PaginationEntityImpl value,
+          $Res Function(_$PaginationEntityImpl) then) =
+      __$$PaginationEntityImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({int? perPage, int? currentPage});
 }
 
 /// @nodoc
-class __$$_PaginationEntityCopyWithImpl<$Res>
-    extends _$PaginationEntityCopyWithImpl<$Res, _$_PaginationEntity>
-    implements _$$_PaginationEntityCopyWith<$Res> {
-  __$$_PaginationEntityCopyWithImpl(
-      _$_PaginationEntity _value, $Res Function(_$_PaginationEntity) _then)
+class __$$PaginationEntityImplCopyWithImpl<$Res>
+    extends _$PaginationEntityCopyWithImpl<$Res, _$PaginationEntityImpl>
+    implements _$$PaginationEntityImplCopyWith<$Res> {
+  __$$PaginationEntityImplCopyWithImpl(_$PaginationEntityImpl _value,
+      $Res Function(_$PaginationEntityImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -92,7 +92,7 @@ class __$$_PaginationEntityCopyWithImpl<$Res>
     Object? perPage = freezed,
     Object? currentPage = freezed,
   }) {
-    return _then(_$_PaginationEntity(
+    return _then(_$PaginationEntityImpl(
       perPage: freezed == perPage
           ? _value.perPage
           : perPage // ignore: cast_nullable_to_non_nullable
@@ -108,11 +108,11 @@ class __$$_PaginationEntityCopyWithImpl<$Res>
 /// @nodoc
 
 @JsonSerializable(fieldRename: FieldRename.snake)
-class _$_PaginationEntity implements _PaginationEntity {
-  const _$_PaginationEntity({this.perPage, this.currentPage});
+class _$PaginationEntityImpl implements _PaginationEntity {
+  const _$PaginationEntityImpl({this.perPage, this.currentPage});
 
-  factory _$_PaginationEntity.fromJson(Map<String, dynamic> json) =>
-      _$$_PaginationEntityFromJson(json);
+  factory _$PaginationEntityImpl.fromJson(Map<String, dynamic> json) =>
+      _$$PaginationEntityImplFromJson(json);
 
   @override
   final int? perPage;
@@ -125,10 +125,10 @@ class _$_PaginationEntity implements _PaginationEntity {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_PaginationEntity &&
+            other is _$PaginationEntityImpl &&
             (identical(other.perPage, perPage) || other.perPage == perPage) &&
             (identical(other.currentPage, currentPage) ||
                 other.currentPage == currentPage));
@@ -141,12 +141,13 @@ class _$_PaginationEntity implements _PaginationEntity {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_PaginationEntityCopyWith<_$_PaginationEntity> get copyWith =>
-      __$$_PaginationEntityCopyWithImpl<_$_PaginationEntity>(this, _$identity);
+  _$$PaginationEntityImplCopyWith<_$PaginationEntityImpl> get copyWith =>
+      __$$PaginationEntityImplCopyWithImpl<_$PaginationEntityImpl>(
+          this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_PaginationEntityToJson(
+    return _$$PaginationEntityImplToJson(
       this,
     );
   }
@@ -154,10 +155,10 @@ class _$_PaginationEntity implements _PaginationEntity {
 
 abstract class _PaginationEntity implements PaginationEntity {
   const factory _PaginationEntity(
-      {final int? perPage, final int? currentPage}) = _$_PaginationEntity;
+      {final int? perPage, final int? currentPage}) = _$PaginationEntityImpl;
 
   factory _PaginationEntity.fromJson(Map<String, dynamic> json) =
-      _$_PaginationEntity.fromJson;
+      _$PaginationEntityImpl.fromJson;
 
   @override
   int? get perPage;
@@ -165,6 +166,6 @@ abstract class _PaginationEntity implements PaginationEntity {
   int? get currentPage;
   @override
   @JsonKey(ignore: true)
-  _$$_PaginationEntityCopyWith<_$_PaginationEntity> get copyWith =>
+  _$$PaginationEntityImplCopyWith<_$PaginationEntityImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

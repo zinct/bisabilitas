@@ -49,15 +49,15 @@ class FFButtonOptions {
 }
 
 class FFButtonWidget extends StatefulWidget {
-  const FFButtonWidget({
-    super.key,
-    required this.text,
-    required this.onPressed,
-    this.icon,
-    this.iconData,
-    required this.options,
-    this.showLoadingIndicator = true,
-  });
+  const FFButtonWidget(
+      {super.key,
+      required this.text,
+      required this.onPressed,
+      this.icon,
+      this.iconData,
+      required this.options,
+      this.showLoadingIndicator = true,
+      this.loading = false});
 
   final String text;
   final Widget? icon;
@@ -65,21 +65,20 @@ class FFButtonWidget extends StatefulWidget {
   final Function()? onPressed;
   final FFButtonOptions options;
   final bool showLoadingIndicator;
+  final bool? loading;
 
   @override
   State<FFButtonWidget> createState() => _FFButtonMaterialState();
 }
 
 class _FFButtonMaterialState extends State<FFButtonWidget> {
-  bool loading = false;
-
   int get maxLines => widget.options.maxLines ?? 1;
   String? get text =>
       widget.options.textStyle?.fontSize == 0 ? null : widget.text;
 
   @override
   Widget build(BuildContext context) {
-    Widget textWidget = loading
+    Widget textWidget = widget.loading ?? false
         ? SizedBox(
             width: widget.options.width == null
                 ? _getTextWidth(text, widget.options.textStyle, maxLines)
@@ -107,19 +106,7 @@ class _FFButtonMaterialState extends State<FFButtonWidget> {
 
     final onPressed = widget.onPressed != null
         ? (widget.showLoadingIndicator
-            ? () async {
-                if (loading) {
-                  return;
-                }
-                setState(() => loading = true);
-                try {
-                  await widget.onPressed!();
-                } finally {
-                  if (mounted) {
-                    setState(() => loading = false);
-                  }
-                }
-              }
+            ? () => widget.onPressed!()
             : () => widget.onPressed!())
         : null;
 
@@ -186,7 +173,8 @@ class _FFButtonMaterialState extends State<FFButtonWidget> {
       ),
     );
 
-    if ((widget.icon != null || widget.iconData != null) && !loading) {
+    if ((widget.icon != null || widget.iconData != null) &&
+        !(widget.loading ?? false)) {
       Widget icon = widget.icon ??
           FaIcon(
             widget.iconData!,
