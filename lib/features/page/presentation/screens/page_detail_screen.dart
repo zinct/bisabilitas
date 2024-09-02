@@ -27,10 +27,83 @@ enum ProfileAccessibility { none, blind, lowVision, colorBlind, dyslexia, epilep
 
 class _PageDetailScreenState extends State<PageDetailScreen> {
   int font = 0;
+  int saturation = 0;
+  int lineSpacing = 0;
+  int letterSpacing = 0;
+  int textAlign = 0;
   bool isOpenDyslexic = false;
   ProfileAccessibility profileAccessibility = ProfileAccessibility.none;
 
   late InAppWebViewController? _webViewController;
+
+  String getSaturationLabel() {
+    switch (saturation) {
+      case 0:
+        return "Saturasi Normal";
+      case 1:
+        return "Saturasi Sedang";
+      case 2:
+        return "Saturasi Tinggi";
+      case 3:
+        return "Desaturasi";
+      default:
+        return "Saturasi Normal";
+    }
+  }
+
+  String getLineSpacingLabel() {
+    switch (lineSpacing) {
+      case 0:
+        return "Default";
+      case 1:
+        return "Sedang";
+      case 2:
+        return "Tinggi";
+      default:
+        return "Default";
+    }
+  }
+
+  String getLetterSpacing() {
+    switch (letterSpacing) {
+      case 0:
+        return "Default";
+      case 1:
+        return "Sedang";
+      case 2:
+        return "Tinggi";
+      default:
+        return "Default";
+    }
+  }
+
+  String getFontLabel() {
+    switch (font) {
+      case 0:
+        return "Default";
+      case 1:
+        return "Sedang";
+      case 2:
+        return "Tinggi";
+      default:
+        return "Default";
+    }
+  }
+
+  String getTextAlignLabel() {
+    switch (textAlign) {
+      case 0:
+        return "Default";
+      case 1:
+        return "Kiri";
+      case 2:
+        return "Tengah";
+      case 3:
+        return "Kanan";
+      default:
+        return "Default";
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -250,13 +323,8 @@ class _PageDetailScreenState extends State<PageDetailScreen> {
                               onTap: () {
                                 if (_webViewController != null) {
                                   setState(() {
-                                    if (font == 0) {
-                                      PageService().increaseFontSize(_webViewController!);
-                                      font = 1;
-                                    } else {
-                                      PageService().resetFontSize(_webViewController!);
-                                      font = 0;
-                                    }
+                                    PageService().toggleFontSize(_webViewController!);
+                                    font = (font + 1) % 3;
                                   });
                                 }
                               },
@@ -274,7 +342,7 @@ class _PageDetailScreenState extends State<PageDetailScreen> {
                                   Padding(
                                     padding: const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 0.0),
                                     child: Text(
-                                      font == 0 ? 'Font Normal' : 'Font Besar',
+                                      'Font ${getFontLabel()}',
                                       textAlign: TextAlign.center,
                                       style: FlutterFlowTheme.of(context).bodyMedium.override(
                                             fontFamily: 'Inter',
@@ -334,7 +402,16 @@ class _PageDetailScreenState extends State<PageDetailScreen> {
                           ),
                           Expanded(
                             child: TouchableOpacityWidget(
-                              onTap: () {},
+                              onTap: () {
+                                setState(() {
+                                  if (_webViewController != null) {
+                                    setState(() {
+                                      PageService().toggleSaturation(_webViewController!);
+                                      saturation = (saturation + 1) % 4;
+                                    });
+                                  }
+                                });
+                              },
                               child: Column(
                                 mainAxisSize: MainAxisSize.max,
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -349,7 +426,7 @@ class _PageDetailScreenState extends State<PageDetailScreen> {
                                   Padding(
                                     padding: const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 0.0),
                                     child: Text(
-                                      'Saturasi',
+                                      getSaturationLabel(),
                                       textAlign: TextAlign.center,
                                       style: FlutterFlowTheme.of(context).bodyMedium.override(
                                             fontFamily: 'Inter',
@@ -373,7 +450,7 @@ class _PageDetailScreenState extends State<PageDetailScreen> {
                                   builder: (context) => StatefulBuilder(
                                     builder: (BuildContext context, StateSetter setState) {
                                       return SizedBox(
-                                        height: 430.h,
+                                        height: 380.h,
                                         child: SingleChildScrollView(
                                           controller: ModalScrollController.of(context),
                                           child: Column(
@@ -403,32 +480,28 @@ class _PageDetailScreenState extends State<PageDetailScreen> {
                                                       ),
                                                 ),
                                                 trailing: Switch(
-                                                  value: true,
+                                                  value: isOpenDyslexic,
                                                   activeColor: Color(0xFFCD7F32),
-                                                  onChanged: (bool value) {},
+                                                  inactiveThumbColor: Color(0xFFCD7F32),
+                                                  onChanged: (bool value) {
+                                                    setState(() {
+                                                      PageService().toggleOpenDyslexicFont(_webViewController!);
+                                                      isOpenDyslexic = value;
+                                                    });
+                                                  },
                                                 ),
                                               ),
                                               ListTile(
-                                                title: Text(
-                                                  'Zoom',
-                                                  style: FlutterFlowTheme.of(context).bodyMedium.override(
-                                                        fontFamily: 'Inter',
-                                                        color: Colors.black,
-                                                        fontSize: 16.0,
-                                                        useGoogleFonts: GoogleFonts.asMap().containsKey('Inter'),
-                                                      ),
-                                                ),
-                                                trailing: Text(
-                                                  'Default',
-                                                  style: FlutterFlowTheme.of(context).bodyMedium.override(
-                                                        fontFamily: 'Inter',
-                                                        color: Color(0xFFCD7F32),
-                                                        fontSize: 14.0,
-                                                        useGoogleFonts: GoogleFonts.asMap().containsKey('Inter'),
-                                                      ),
-                                                ),
-                                              ),
-                                              ListTile(
+                                                onTap: () {
+                                                  setState(() {
+                                                    if (_webViewController != null) {
+                                                      setState(() {
+                                                        PageService().toggleLetterSpacing(_webViewController!);
+                                                        letterSpacing = (letterSpacing + 1) % 3;
+                                                      });
+                                                    }
+                                                  });
+                                                },
                                                 title: Text(
                                                   'Jarak Spasi',
                                                   style: FlutterFlowTheme.of(context).bodyMedium.override(
@@ -439,7 +512,7 @@ class _PageDetailScreenState extends State<PageDetailScreen> {
                                                       ),
                                                 ),
                                                 trailing: Text(
-                                                  'Default',
+                                                  getLetterSpacing(),
                                                   style: FlutterFlowTheme.of(context).bodyMedium.override(
                                                         fontFamily: 'Inter',
                                                         color: Color(0xFFCD7F32),
@@ -449,6 +522,16 @@ class _PageDetailScreenState extends State<PageDetailScreen> {
                                                 ),
                                               ),
                                               ListTile(
+                                                onTap: () {
+                                                  setState(() {
+                                                    if (_webViewController != null) {
+                                                      setState(() {
+                                                        PageService().toggleLineSpacing(_webViewController!);
+                                                        lineSpacing = (lineSpacing + 1) % 3;
+                                                      });
+                                                    }
+                                                  });
+                                                },
                                                 title: Text(
                                                   'Jarak Baris',
                                                   style: FlutterFlowTheme.of(context).bodyMedium.override(
@@ -459,7 +542,7 @@ class _PageDetailScreenState extends State<PageDetailScreen> {
                                                       ),
                                                 ),
                                                 trailing: Text(
-                                                  'Default',
+                                                  getLineSpacingLabel(),
                                                   style: FlutterFlowTheme.of(context).bodyMedium.override(
                                                         fontFamily: 'Inter',
                                                         color: Color(0xFFCD7F32),
@@ -469,6 +552,14 @@ class _PageDetailScreenState extends State<PageDetailScreen> {
                                                 ),
                                               ),
                                               ListTile(
+                                                onTap: () {
+                                                  if (_webViewController != null) {
+                                                    setState(() {
+                                                      PageService().toggleFontSize(_webViewController!);
+                                                      font = (font + 1) % 3;
+                                                    });
+                                                  }
+                                                },
                                                 title: Text(
                                                   'Ukuran Teks',
                                                   style: FlutterFlowTheme.of(context).bodyMedium.override(
@@ -479,7 +570,7 @@ class _PageDetailScreenState extends State<PageDetailScreen> {
                                                       ),
                                                 ),
                                                 trailing: Text(
-                                                  'Default',
+                                                  getFontLabel(),
                                                   style: FlutterFlowTheme.of(context).bodyMedium.override(
                                                         fontFamily: 'Inter',
                                                         color: Color(0xFFCD7F32),
@@ -489,6 +580,14 @@ class _PageDetailScreenState extends State<PageDetailScreen> {
                                                 ),
                                               ),
                                               ListTile(
+                                                onTap: () {
+                                                  if (_webViewController != null) {
+                                                    setState(() {
+                                                      PageService().toggleTextAlign(_webViewController!);
+                                                      textAlign = (textAlign + 1) % 4;
+                                                    });
+                                                  }
+                                                },
                                                 title: Text(
                                                   'Ratakan Teks',
                                                   style: FlutterFlowTheme.of(context).bodyMedium.override(
@@ -499,7 +598,7 @@ class _PageDetailScreenState extends State<PageDetailScreen> {
                                                       ),
                                                 ),
                                                 trailing: Text(
-                                                  'Default',
+                                                  getTextAlignLabel(),
                                                   style: FlutterFlowTheme.of(context).bodyMedium.override(
                                                         fontFamily: 'Inter',
                                                         color: Color(0xFFCD7F32),

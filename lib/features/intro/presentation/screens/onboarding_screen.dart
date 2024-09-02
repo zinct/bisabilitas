@@ -32,10 +32,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   void handleGoogleLogin() async {
     GoogleSignIn googleSignIn = GoogleSignIn(
-      clientId:
-          '763870623181-4r6eeue1misgj899pp5abngk09njov06.apps.googleusercontent.com',
-      serverClientId:
-          '763870623181-u5pf5p0vsabto6nug2drhovc0e771nl0.apps.googleusercontent.com',
+      clientId: '763870623181-4r6eeue1misgj899pp5abngk09njov06.apps.googleusercontent.com',
+      serverClientId: '763870623181-u5pf5p0vsabto6nug2drhovc0e771nl0.apps.googleusercontent.com',
       scopes: <String>[
         'email',
       ],
@@ -66,6 +64,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
     final model = BaseModel.fromJson(response.data);
 
+    print(model);
     if (model.success ?? false) {
       // Store token to headers
       _api.setToken(model.data['token']);
@@ -111,8 +110,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsetsDirectional.fromSTEB(
-                        0.0, 10.0, 0.0, 0.0),
+                    padding: const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
                     child: Text(
                       'Tetap terhubung\ndengan Internet',
                       textAlign: TextAlign.center,
@@ -124,19 +122,16 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsetsDirectional.fromSTEB(
-                        38.0, 20.0, 38.0, 0.0),
+                    padding: const EdgeInsetsDirectional.fromSTEB(38.0, 20.0, 38.0, 0.0),
                     child: Text(
                       'Daftar akun Bisabilitas untuk dapat mengakses fitur aksesibilitas pada saat kamu menjelajah Internet.',
                       textAlign: TextAlign.center,
                       style: FlutterFlowTheme.of(context).bodyMedium.override(
-                            fontFamily:
-                                FlutterFlowTheme.of(context).bodyMediumFamily,
+                            fontFamily: FlutterFlowTheme.of(context).bodyMediumFamily,
                             color: const Color(0xFF969696),
                             fontSize: 12.0,
                             letterSpacing: 0.0,
-                            useGoogleFonts: GoogleFonts.asMap().containsKey(
-                                FlutterFlowTheme.of(context).bodyMediumFamily),
+                            useGoogleFonts: GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodyMediumFamily),
                           ),
                     ),
                   ),
@@ -148,8 +143,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       : Column(
                           children: [
                             Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  0.0, 48.0, 0.0, 0.0),
+                              padding: const EdgeInsetsDirectional.fromSTEB(0.0, 48.0, 0.0, 0.0),
                               child: FFButtonWidget(
                                 onPressed: () {
                                   Navigator.of(context).pushNamed(ROUTER.login);
@@ -158,22 +152,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                 options: FFButtonOptions(
                                   width: MediaQuery.sizeOf(context).width * 1.0,
                                   height: 50.0,
-                                  padding: const EdgeInsetsDirectional.fromSTEB(
-                                      24.0, 0.0, 24.0, 0.0),
-                                  iconPadding:
-                                      const EdgeInsetsDirectional.fromSTEB(
-                                          0.0, 0.0, 0.0, 0.0),
+                                  padding: const EdgeInsetsDirectional.fromSTEB(24.0, 0.0, 24.0, 0.0),
+                                  iconPadding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
                                   color: const Color(0xFFCD7F32),
-                                  textStyle: FlutterFlowTheme.of(context)
-                                      .titleSmall
-                                      .override(
-                                        fontFamily: FlutterFlowTheme.of(context)
-                                            .titleSmallFamily,
+                                  textStyle: FlutterFlowTheme.of(context).titleSmall.override(
+                                        fontFamily: FlutterFlowTheme.of(context).titleSmallFamily,
                                         letterSpacing: 0.0,
-                                        useGoogleFonts: GoogleFonts.asMap()
-                                            .containsKey(
-                                                FlutterFlowTheme.of(context)
-                                                    .titleSmallFamily),
+                                        useGoogleFonts: GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).titleSmallFamily),
                                       ),
                                   elevation: 0.0,
                                   borderSide: const BorderSide(
@@ -185,34 +170,23 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                               ),
                             ),
                             Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  0.0, 24.0, 0.0, 0.0),
+                              padding: const EdgeInsetsDirectional.fromSTEB(0.0, 24.0, 0.0, 0.0),
                               child: FFButtonWidget(
                                 onPressed: () {
-                                  Navigator.of(context)
-                                      .pushNamed(ROUTER.register);
+                                  Navigator.of(context).pushNamed(ROUTER.register);
                                 },
                                 text: 'Buat Akun',
                                 options: FFButtonOptions(
                                   width: MediaQuery.sizeOf(context).width * 1.0,
                                   height: 50.0,
-                                  padding: const EdgeInsetsDirectional.fromSTEB(
-                                      24.0, 0.0, 24.0, 0.0),
-                                  iconPadding:
-                                      const EdgeInsetsDirectional.fromSTEB(
-                                          0.0, 0.0, 0.0, 0.0),
+                                  padding: const EdgeInsetsDirectional.fromSTEB(24.0, 0.0, 24.0, 0.0),
+                                  iconPadding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
                                   color: const Color(0xFFF2DFCB),
-                                  textStyle: FlutterFlowTheme.of(context)
-                                      .titleSmall
-                                      .override(
-                                        fontFamily: FlutterFlowTheme.of(context)
-                                            .titleSmallFamily,
+                                  textStyle: FlutterFlowTheme.of(context).titleSmall.override(
+                                        fontFamily: FlutterFlowTheme.of(context).titleSmallFamily,
                                         color: const Color(0xFF995F25),
                                         letterSpacing: 0.0,
-                                        useGoogleFonts: GoogleFonts.asMap()
-                                            .containsKey(
-                                                FlutterFlowTheme.of(context)
-                                                    .titleSmallFamily),
+                                        useGoogleFonts: GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).titleSmallFamily),
                                       ),
                                   elevation: 0.0,
                                   borderSide: const BorderSide(
@@ -226,22 +200,18 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                             Align(
                               alignment: const AlignmentDirectional(0.0, 0.0),
                               child: Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
-                                    0.0, 16.0, 0.0, 16.0),
+                                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 16.0, 0.0, 16.0),
                                 child: Row(
                                   mainAxisSize: MainAxisSize.max,
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text(
                                       'atau',
-                                      style: FlutterFlowTheme.of(context)
-                                          .bodyMedium
-                                          .override(
+                                      style: FlutterFlowTheme.of(context).bodyMedium.override(
                                             fontFamily: 'Inter',
                                             color: const Color(0xFFCFCFCF),
                                             letterSpacing: 0.0,
-                                            useGoogleFonts: GoogleFonts.asMap()
-                                                .containsKey('Inter'),
+                                            useGoogleFonts: GoogleFonts.asMap().containsKey('Inter'),
                                           ),
                                     ),
                                   ],
@@ -254,8 +224,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                 width: MediaQuery.sizeOf(context).width * 1.0,
                                 height: 48.0,
                                 decoration: BoxDecoration(
-                                  color: FlutterFlowTheme.of(context)
-                                      .secondaryBackground,
+                                  color: FlutterFlowTheme.of(context).secondaryBackground,
                                   borderRadius: BorderRadius.circular(8.0),
                                   border: Border.all(
                                     color: const Color(0xFFE2E8F0),
@@ -276,28 +245,17 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                       ),
                                     ),
                                     Align(
-                                      alignment:
-                                          const AlignmentDirectional(0.0, 0.0),
+                                      alignment: const AlignmentDirectional(0.0, 0.0),
                                       child: Padding(
-                                        padding: const EdgeInsetsDirectional
-                                            .fromSTEB(10.0, 0.0, 0.0, 0.0),
+                                        padding: const EdgeInsetsDirectional.fromSTEB(10.0, 0.0, 0.0, 0.0),
                                         child: Text(
                                           'Login dengan Google',
-                                          style: FlutterFlowTheme.of(context)
-                                              .bodyMedium
-                                              .override(
-                                                fontFamily:
-                                                    FlutterFlowTheme.of(context)
-                                                        .bodyMediumFamily,
+                                          style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                                fontFamily: FlutterFlowTheme.of(context).bodyMediumFamily,
                                                 fontSize: 16.0,
                                                 letterSpacing: 0.0,
                                                 fontWeight: FontWeight.w600,
-                                                useGoogleFonts: GoogleFonts
-                                                        .asMap()
-                                                    .containsKey(
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .bodyMediumFamily),
+                                                useGoogleFonts: GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodyMediumFamily),
                                               ),
                                         ),
                                       ),

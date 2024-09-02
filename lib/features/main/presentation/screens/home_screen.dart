@@ -7,8 +7,10 @@
 
 import 'package:bisabilitas/core/api/api.dart';
 import 'package:bisabilitas/core/components/progressindicator/primary_progress_indicator.dart';
+import 'package:bisabilitas/core/constants/router.dart';
 import 'package:bisabilitas/core/models/base/base_model.dart';
 import 'package:bisabilitas/core/models/list/list_model.dart';
+import 'package:bisabilitas/core/widgets/touchable_opacity_widget.dart';
 import 'package:bisabilitas/features/page/domain/entities/page/page_entity.dart';
 import 'package:bisabilitas/flutter_flow/flutter_flow_theme.dart';
 import 'package:bisabilitas/injection_container.dart';
@@ -47,8 +49,7 @@ class _HomeScreenState extends State<HomeScreen> {
       isHistoryLoading = false;
     });
 
-    final model =
-        ListModel.fromJson(response.data, (p0) => PageEntity.fromJson(p0));
+    final model = ListModel.fromJson(response.data, (p0) => PageEntity.fromJson(p0));
     if (model.success ?? false) {
       setState(() {
         historyPages = model.data!;
@@ -65,8 +66,7 @@ class _HomeScreenState extends State<HomeScreen> {
       isRecommendationLoading = false;
     });
 
-    final model =
-        ListModel.fromJson(response.data, (p0) => PageEntity.fromJson(p0));
+    final model = ListModel.fromJson(response.data, (p0) => PageEntity.fromJson(p0));
     if (model.success ?? false) {
       setState(() {
         recommendationPages = model.data!;
@@ -100,8 +100,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     Align(
                       alignment: const AlignmentDirectional(-1.0, 0.0),
                       child: Padding(
-                        padding: const EdgeInsetsDirectional.fromSTEB(
-                            24.0, 10.0, 24.0, 0.0),
+                        padding: const EdgeInsetsDirectional.fromSTEB(24.0, 10.0, 24.0, 0.0),
                         child: Text(
                           'Beranda',
                           textAlign: TextAlign.start,
@@ -117,17 +116,14 @@ class _HomeScreenState extends State<HomeScreen> {
                         ? Column(
                             children: [
                               Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
-                                    24.0, 20.0, 24.0, 0.0),
+                                padding: const EdgeInsetsDirectional.fromSTEB(24.0, 20.0, 24.0, 0.0),
                                 child: Row(
                                   mainAxisSize: MainAxisSize.max,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Align(
-                                      alignment:
-                                          const AlignmentDirectional(-1.0, 0.0),
+                                      alignment: const AlignmentDirectional(-1.0, 0.0),
                                       child: Text(
                                         'Terakhir Dibaca',
                                         textAlign: TextAlign.start,
@@ -140,14 +136,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ),
                                     Row(
                                       mainAxisSize: MainAxisSize.max,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
                                       children: [
                                         Align(
-                                          alignment: const AlignmentDirectional(
-                                              -1.0, 0.0),
+                                          alignment: const AlignmentDirectional(-1.0, 0.0),
                                           child: Text(
                                             'Lihat',
                                             textAlign: TextAlign.start,
@@ -160,11 +153,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                           ),
                                         ),
                                         Padding(
-                                          padding: const EdgeInsetsDirectional
-                                              .fromSTEB(5.0, 0.0, 0.0, 0.0),
+                                          padding: const EdgeInsetsDirectional.fromSTEB(5.0, 0.0, 0.0, 0.0),
                                           child: ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(8.0),
+                                            borderRadius: BorderRadius.circular(8.0),
                                             child: Image.asset(
                                               'assets/images/chevron-right.png',
                                               width: 14.0,
@@ -179,172 +170,102 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                               ),
                               Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
-                                    0.0, 10.0, 0.0, 0.0),
+                                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
                                 child: SingleChildScrollView(
                                   scrollDirection: Axis.horizontal,
                                   child: Container(
                                     padding: EdgeInsets.only(bottom: 1),
                                     child: Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisAlignment: MainAxisAlignment.start,
                                       children: [
                                         ...historyPages
                                             .map(
                                               (row) => Padding(
-                                                padding:
-                                                    const EdgeInsetsDirectional
-                                                        .fromSTEB(
-                                                        24.0, 0.0, 0, 0.0),
+                                                padding: const EdgeInsetsDirectional.fromSTEB(24.0, 0.0, 0, 0.0),
                                                 child: Material(
                                                   color: Colors.transparent,
                                                   elevation: 1.0,
                                                   shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            12.0),
+                                                    borderRadius: BorderRadius.circular(12.0),
                                                   ),
                                                   child: Container(
                                                     width: 323.0.w,
                                                     height: 146.0.h,
                                                     decoration: BoxDecoration(
-                                                      color: FlutterFlowTheme
-                                                              .of(context)
-                                                          .secondaryBackground,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              12.0),
+                                                      color: FlutterFlowTheme.of(context).secondaryBackground,
+                                                      borderRadius: BorderRadius.circular(12.0),
                                                     ),
                                                     child: Padding(
-                                                      padding:
-                                                          const EdgeInsetsDirectional
-                                                              .fromSTEB(14.0,
-                                                              14.0, 14.0, 14.0),
+                                                      padding: const EdgeInsetsDirectional.fromSTEB(14.0, 14.0, 14.0, 14.0),
                                                       child: Column(
-                                                        mainAxisSize:
-                                                            MainAxisSize.max,
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
+                                                        mainAxisSize: MainAxisSize.max,
+                                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                         children: [
                                                           Row(
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .start,
+                                                            crossAxisAlignment: CrossAxisAlignment.start,
                                                             children: [
                                                               Padding(
-                                                                padding:
-                                                                    const EdgeInsetsDirectional
-                                                                        .fromSTEB(
-                                                                        0.0,
-                                                                        0.0,
-                                                                        10.0,
-                                                                        0.0),
-                                                                child:
-                                                                    ClipRRect(
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              9.0),
-                                                                  child: Image
-                                                                      .network(
+                                                                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 10.0, 0.0),
+                                                                child: ClipRRect(
+                                                                  borderRadius: BorderRadius.circular(9.0),
+                                                                  child: Image.network(
                                                                     row.image!,
                                                                     width: 90.0,
-                                                                    height:
-                                                                        90.0,
-                                                                    fit: BoxFit
-                                                                        .cover,
+                                                                    height: 90.0,
+                                                                    fit: BoxFit.cover,
                                                                   ),
                                                                 ),
                                                               ),
                                                               Flexible(
                                                                 child: Column(
-                                                                  crossAxisAlignment:
-                                                                      CrossAxisAlignment
-                                                                          .start,
+                                                                  crossAxisAlignment: CrossAxisAlignment.start,
                                                                   children: [
                                                                     Text(
                                                                       row.title!,
-                                                                      maxLines:
-                                                                          1,
-                                                                      overflow:
-                                                                          TextOverflow
-                                                                              .ellipsis,
-                                                                      textAlign:
-                                                                          TextAlign
-                                                                              .start,
-                                                                      style: GoogleFonts
-                                                                          .getFont(
+                                                                      maxLines: 1,
+                                                                      overflow: TextOverflow.ellipsis,
+                                                                      textAlign: TextAlign.start,
+                                                                      style: GoogleFonts.getFont(
                                                                         'Inter',
-                                                                        color: Colors
-                                                                            .black,
-                                                                        fontWeight:
-                                                                            FontWeight.bold,
-                                                                        fontSize:
-                                                                            14.0,
+                                                                        color: Colors.black,
+                                                                        fontWeight: FontWeight.bold,
+                                                                        fontSize: 14.0,
                                                                       ),
                                                                     ),
                                                                     Text(
                                                                       row.url!,
-                                                                      maxLines:
-                                                                          1,
-                                                                      overflow:
-                                                                          TextOverflow
-                                                                              .ellipsis,
-                                                                      textAlign:
-                                                                          TextAlign
-                                                                              .start,
-                                                                      style: GoogleFonts
-                                                                          .getFont(
+                                                                      maxLines: 1,
+                                                                      overflow: TextOverflow.ellipsis,
+                                                                      textAlign: TextAlign.start,
+                                                                      style: GoogleFonts.getFont(
                                                                         'Inter',
-                                                                        color: const Color(
-                                                                            0xFFCFCFCF),
-                                                                        fontWeight:
-                                                                            FontWeight.w500,
-                                                                        fontSize:
-                                                                            12.0,
+                                                                        color: const Color(0xFFCFCFCF),
+                                                                        fontWeight: FontWeight.w500,
+                                                                        fontSize: 12.0,
                                                                       ),
                                                                     ),
                                                                     Text(
                                                                       row.description!,
-                                                                      textAlign:
-                                                                          TextAlign
-                                                                              .start,
-                                                                      maxLines:
-                                                                          2,
-                                                                      overflow:
-                                                                          TextOverflow
-                                                                              .ellipsis,
-                                                                      style: GoogleFonts
-                                                                          .getFont(
+                                                                      textAlign: TextAlign.start,
+                                                                      maxLines: 2,
+                                                                      overflow: TextOverflow.ellipsis,
+                                                                      style: GoogleFonts.getFont(
                                                                         'Inter',
-                                                                        color: Colors
-                                                                            .black,
-                                                                        fontWeight:
-                                                                            FontWeight.normal,
-                                                                        fontSize:
-                                                                            13.0,
+                                                                        color: Colors.black,
+                                                                        fontWeight: FontWeight.normal,
+                                                                        fontSize: 13.0,
                                                                       ),
                                                                     ),
-                                                                    SizedBox(
-                                                                        height:
-                                                                            5.h),
+                                                                    SizedBox(height: 5.h),
                                                                     Text(
                                                                       'Selengkapnya',
-                                                                      textAlign:
-                                                                          TextAlign
-                                                                              .start,
-                                                                      style: GoogleFonts
-                                                                          .getFont(
+                                                                      textAlign: TextAlign.start,
+                                                                      style: GoogleFonts.getFont(
                                                                         'Inter',
-                                                                        color: const Color(
-                                                                            0xFF995F25),
-                                                                        fontWeight:
-                                                                            FontWeight.w500,
-                                                                        fontSize:
-                                                                            13.0,
+                                                                        color: const Color(0xFF995F25),
+                                                                        fontWeight: FontWeight.w500,
+                                                                        fontSize: 13.0,
                                                                       ),
                                                                     )
                                                                   ],
@@ -353,87 +274,44 @@ class _HomeScreenState extends State<HomeScreen> {
                                                             ],
                                                           ),
                                                           Padding(
-                                                            padding:
-                                                                const EdgeInsetsDirectional
-                                                                    .fromSTEB(
-                                                                    0.0,
-                                                                    10.0,
-                                                                    0.0,
-                                                                    0.0),
+                                                            padding: const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
                                                             child: Row(
-                                                              mainAxisSize:
-                                                                  MainAxisSize
-                                                                      .max,
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .spaceBetween,
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .center,
+                                                              mainAxisSize: MainAxisSize.max,
+                                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                              crossAxisAlignment: CrossAxisAlignment.center,
                                                               children: [
                                                                 Align(
-                                                                  alignment:
-                                                                      const AlignmentDirectional(
-                                                                          0.0,
-                                                                          0.0),
-                                                                  child:
-                                                                      Padding(
-                                                                    padding: const EdgeInsetsDirectional
-                                                                        .fromSTEB(
-                                                                        0.0,
-                                                                        2.0,
-                                                                        0.0,
-                                                                        0.0),
+                                                                  alignment: const AlignmentDirectional(0.0, 0.0),
+                                                                  child: Padding(
+                                                                    padding: const EdgeInsetsDirectional.fromSTEB(0.0, 2.0, 0.0, 0.0),
                                                                     child: Text(
-                                                                      DateFormat(
-                                                                              'EEE, dd-MM-yyyy')
-                                                                          .format(
-                                                                              row.createdAt!),
-                                                                      textAlign:
-                                                                          TextAlign
-                                                                              .start,
-                                                                      style: GoogleFonts
-                                                                          .getFont(
+                                                                      DateFormat('EEE, dd-MM-yyyy').format(row.createdAt!),
+                                                                      textAlign: TextAlign.start,
+                                                                      style: GoogleFonts.getFont(
                                                                         'Inter',
-                                                                        color: const Color(
-                                                                            0xFFCFCFCF),
-                                                                        fontWeight:
-                                                                            FontWeight.w500,
-                                                                        fontSize:
-                                                                            12.0,
+                                                                        color: const Color(0xFFCFCFCF),
+                                                                        fontWeight: FontWeight.w500,
+                                                                        fontSize: 12.0,
                                                                       ),
                                                                     ),
                                                                   ),
                                                                 ),
                                                                 Expanded(
-                                                                  child:
-                                                                      Container(
-                                                                    decoration:
-                                                                        BoxDecoration(
-                                                                      color: FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .secondaryBackground,
+                                                                  child: Container(
+                                                                    decoration: BoxDecoration(
+                                                                      color: FlutterFlowTheme.of(context).secondaryBackground,
                                                                     ),
                                                                     child: Row(
-                                                                      mainAxisSize:
-                                                                          MainAxisSize
-                                                                              .max,
-                                                                      mainAxisAlignment:
-                                                                          MainAxisAlignment
-                                                                              .end,
+                                                                      mainAxisSize: MainAxisSize.max,
+                                                                      mainAxisAlignment: MainAxisAlignment.end,
                                                                       children: [
                                                                         ClipRRect(
-                                                                          borderRadius:
-                                                                              BorderRadius.circular(8.0),
-                                                                          child:
-                                                                              Image.asset(
+                                                                          borderRadius: BorderRadius.circular(8.0),
+                                                                          child: Image.asset(
                                                                             'assets/images/heart.png',
-                                                                            width:
-                                                                                15.0,
-                                                                            height:
-                                                                                15.0,
-                                                                            fit:
-                                                                                BoxFit.cover,
+                                                                            width: 15.0,
+                                                                            height: 15.0,
+                                                                            fit: BoxFit.cover,
                                                                           ),
                                                                         ),
                                                                       ],
@@ -463,8 +341,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     Align(
                       alignment: const AlignmentDirectional(-1.0, 0.0),
                       child: Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(24.0,
-                            historyPages.isNotEmpty ? 40.0 : 20.0, 24.0, 0.0),
+                        padding: EdgeInsetsDirectional.fromSTEB(24.0, historyPages.isNotEmpty ? 40.0 : 20.0, 24.0, 0.0),
                         child: Text(
                           'Rekomendasi Topik\nHari ini',
                           textAlign: TextAlign.start,
@@ -477,8 +354,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsetsDirectional.fromSTEB(
-                          24.0, 5.0, 24.0, 20.0),
+                      padding: const EdgeInsetsDirectional.fromSTEB(24.0, 5.0, 24.0, 20.0),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -498,157 +374,141 @@ class _HomeScreenState extends State<HomeScreen> {
                         ],
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsetsDirectional.fromSTEB(
-                          24.0, 0.0, 24.0, 0.0),
-                      child: Material(
-                        color: Colors.transparent,
-                        elevation: 1.0,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12.0),
-                        ),
-                        child: Container(
-                          width: MediaQuery.sizeOf(context).width * 1.0,
-                          height: 290.h,
-                          decoration: BoxDecoration(
-                            color: FlutterFlowTheme.of(context)
-                                .secondaryBackground,
+                    TouchableOpacityWidget(
+                      onTap: () {
+                        Navigator.of(context).pushNamed(ROUTER.pageDetail, arguments: recommendationPages[0].url);
+                      },
+                      child: Padding(
+                        padding: const EdgeInsetsDirectional.fromSTEB(24.0, 0.0, 24.0, 0.0),
+                        child: Material(
+                          color: Colors.transparent,
+                          elevation: 1.0,
+                          shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12.0),
                           ),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(8.0),
-                                child: Image.network(
-                                  recommendationPages[0].image!,
-                                  width: MediaQuery.sizeOf(context).width * 1.0,
-                                  height: 170.h,
-                                  fit: BoxFit.cover,
+                          child: Container(
+                            width: MediaQuery.sizeOf(context).width * 1.0,
+                            height: 290.h,
+                            decoration: BoxDecoration(
+                              color: FlutterFlowTheme.of(context).secondaryBackground,
+                              borderRadius: BorderRadius.circular(12.0),
+                            ),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(8.0),
+                                  child: Image.network(
+                                    recommendationPages[0].image!,
+                                    width: MediaQuery.sizeOf(context).width * 1.0,
+                                    height: 170.h,
+                                    fit: BoxFit.cover,
+                                  ),
                                 ),
-                              ),
-                              Expanded(
-                                child: Padding(
-                                  padding: const EdgeInsetsDirectional.fromSTEB(
-                                      10.0, 10.0, 10.0, 10.0),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.max,
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Flexible(
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              recommendationPages[0].title!,
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                              textAlign: TextAlign.start,
-                                              style: GoogleFonts.getFont(
-                                                'Inter',
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 14.0,
+                                Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsetsDirectional.fromSTEB(10.0, 10.0, 10.0, 10.0),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Flexible(
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                recommendationPages[0].title!,
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                                textAlign: TextAlign.start,
+                                                style: GoogleFonts.getFont(
+                                                  'Inter',
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 14.0,
+                                                ),
                                               ),
-                                            ),
-                                            Text(
-                                              recommendationPages[0].url!,
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                              textAlign: TextAlign.start,
-                                              style: GoogleFonts.getFont(
-                                                'Inter',
-                                                color: const Color(0xFFCFCFCF),
-                                                fontWeight: FontWeight.w500,
-                                                fontSize: 12.0,
+                                              Text(
+                                                recommendationPages[0].url!,
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                                textAlign: TextAlign.start,
+                                                style: GoogleFonts.getFont(
+                                                  'Inter',
+                                                  color: const Color(0xFFCFCFCF),
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: 12.0,
+                                                ),
                                               ),
-                                            ),
-                                            Text(
-                                              recommendationPages[0]
-                                                  .description!,
-                                              textAlign: TextAlign.start,
-                                              maxLines: 2,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: GoogleFonts.getFont(
-                                                'Inter',
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.normal,
-                                                fontSize: 13.0,
+                                              Text(
+                                                recommendationPages[0].description!,
+                                                textAlign: TextAlign.start,
+                                                maxLines: 2,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: GoogleFonts.getFont(
+                                                  'Inter',
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.normal,
+                                                  fontSize: 13.0,
+                                                ),
                                               ),
-                                            ),
-                                          ],
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsetsDirectional
-                                            .fromSTEB(0.0, 10.0, 0.0, 0.0),
-                                        child: Row(
-                                          mainAxisSize: MainAxisSize.max,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            Align(
-                                              alignment:
-                                                  const AlignmentDirectional(
-                                                      0.0, 0.0),
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsetsDirectional
-                                                        .fromSTEB(
-                                                        0.0, 2.0, 0.0, 0.0),
-                                                child: Text(
-                                                  'Sel - 20.20',
-                                                  textAlign: TextAlign.start,
-                                                  style: GoogleFonts.getFont(
-                                                    'Inter',
-                                                    color:
-                                                        const Color(0xFFCFCFCF),
-                                                    fontWeight: FontWeight.w500,
-                                                    fontSize: 12.0,
+                                        Padding(
+                                          padding: const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
+                                          child: Row(
+                                            mainAxisSize: MainAxisSize.max,
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            children: [
+                                              Align(
+                                                alignment: const AlignmentDirectional(0.0, 0.0),
+                                                child: Padding(
+                                                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 2.0, 0.0, 0.0),
+                                                  child: Text(
+                                                    'Sel - 20.20',
+                                                    textAlign: TextAlign.start,
+                                                    style: GoogleFonts.getFont(
+                                                      'Inter',
+                                                      color: const Color(0xFFCFCFCF),
+                                                      fontWeight: FontWeight.w500,
+                                                      fontSize: 12.0,
+                                                    ),
                                                   ),
                                                 ),
                                               ),
-                                            ),
-                                            Expanded(
-                                              child: Container(
-                                                decoration: BoxDecoration(
-                                                  color: FlutterFlowTheme.of(
-                                                          context)
-                                                      .secondaryBackground,
-                                                ),
-                                                child: Row(
-                                                  mainAxisSize:
-                                                      MainAxisSize.max,
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.end,
-                                                  children: [
-                                                    ClipRRect(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              8.0),
-                                                      child: Image.asset(
-                                                        'assets/images/heart.png',
-                                                        width: 15.0,
-                                                        height: 15.0,
-                                                        fit: BoxFit.cover,
+                                              Expanded(
+                                                child: Container(
+                                                  decoration: BoxDecoration(
+                                                    color: FlutterFlowTheme.of(context).secondaryBackground,
+                                                  ),
+                                                  child: Row(
+                                                    mainAxisSize: MainAxisSize.max,
+                                                    mainAxisAlignment: MainAxisAlignment.end,
+                                                    children: [
+                                                      ClipRRect(
+                                                        borderRadius: BorderRadius.circular(8.0),
+                                                        child: Image.asset(
+                                                          'assets/images/heart.png',
+                                                          width: 15.0,
+                                                          height: 15.0,
+                                                          fit: BoxFit.cover,
+                                                        ),
                                                       ),
-                                                    ),
-                                                  ],
+                                                    ],
+                                                  ),
                                                 ),
                                               ),
-                                            ),
-                                          ],
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                       ),
@@ -657,8 +517,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       height: 20.h,
                     ),
                     Padding(
-                      padding: const EdgeInsetsDirectional.fromSTEB(
-                          0.0, 10.0, 0.0, 0.0),
+                      padding: const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
                       child: SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
                         child: Container(
@@ -670,142 +529,104 @@ class _HomeScreenState extends State<HomeScreen> {
                               ...recommendationPages
                                   .sublist(1)
                                   .map(
-                                    (row) => Padding(
-                                      padding:
-                                          const EdgeInsetsDirectional.fromSTEB(
-                                              24.0, 0.0, 0, 0.0),
-                                      child: Material(
-                                        color: Colors.transparent,
-                                        elevation: 1.0,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(12.0),
-                                        ),
-                                        child: Container(
-                                          width: 323.0.w,
-                                          height: 146.0.h,
-                                          decoration: BoxDecoration(
-                                            color: FlutterFlowTheme.of(context)
-                                                .secondaryBackground,
-                                            borderRadius:
-                                                BorderRadius.circular(12.0),
+                                    (row) => TouchableOpacityWidget(
+                                      onTap: () {
+                                        Navigator.of(context).pushNamed(ROUTER.pageDetail, arguments: row.url);
+                                      },
+                                      child: Padding(
+                                        padding: const EdgeInsetsDirectional.fromSTEB(24.0, 0.0, 0, 0.0),
+                                        child: Material(
+                                          color: Colors.transparent,
+                                          elevation: 1.0,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(12.0),
                                           ),
-                                          child: Padding(
-                                            padding: const EdgeInsetsDirectional
-                                                .fromSTEB(
-                                                14.0, 14.0, 14.0, 14.0),
-                                            child: Column(
-                                              mainAxisSize: MainAxisSize.max,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Row(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Padding(
-                                                      padding:
-                                                          const EdgeInsetsDirectional
-                                                              .fromSTEB(0.0,
-                                                              0.0, 10.0, 0.0),
-                                                      child: ClipRRect(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(9.0),
-                                                        child: Image.network(
-                                                          row.image!,
-                                                          width: 90.0,
-                                                          height: 90.0,
-                                                          fit: BoxFit.cover,
+                                          child: Container(
+                                            width: 323.0.w,
+                                            height: 146.0.h,
+                                            decoration: BoxDecoration(
+                                              color: FlutterFlowTheme.of(context).secondaryBackground,
+                                              borderRadius: BorderRadius.circular(12.0),
+                                            ),
+                                            child: Padding(
+                                              padding: const EdgeInsetsDirectional.fromSTEB(14.0, 14.0, 14.0, 14.0),
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.max,
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                children: [
+                                                  Row(
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    children: [
+                                                      Padding(
+                                                        padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 10.0, 0.0),
+                                                        child: ClipRRect(
+                                                          borderRadius: BorderRadius.circular(9.0),
+                                                          child: Image.network(
+                                                            row.image!,
+                                                            width: 90.0,
+                                                            height: 90.0,
+                                                            fit: BoxFit.cover,
+                                                          ),
                                                         ),
                                                       ),
-                                                    ),
-                                                    Flexible(
-                                                      child: Column(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          Text(
-                                                            row.title!,
-                                                            maxLines: 1,
-                                                            overflow:
-                                                                TextOverflow
-                                                                    .ellipsis,
-                                                            textAlign:
-                                                                TextAlign.start,
-                                                            style: GoogleFonts
-                                                                .getFont(
-                                                              'Inter',
-                                                              color:
-                                                                  Colors.black,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                              fontSize: 14.0,
+                                                      Flexible(
+                                                        child: Column(
+                                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                                          children: [
+                                                            Text(
+                                                              row.title!,
+                                                              maxLines: 1,
+                                                              overflow: TextOverflow.ellipsis,
+                                                              textAlign: TextAlign.start,
+                                                              style: GoogleFonts.getFont(
+                                                                'Inter',
+                                                                color: Colors.black,
+                                                                fontWeight: FontWeight.bold,
+                                                                fontSize: 14.0,
+                                                              ),
                                                             ),
-                                                          ),
-                                                          Text(
-                                                            row.url!,
-                                                            maxLines: 1,
-                                                            overflow:
-                                                                TextOverflow
-                                                                    .ellipsis,
-                                                            textAlign:
-                                                                TextAlign.start,
-                                                            style: GoogleFonts
-                                                                .getFont(
-                                                              'Inter',
-                                                              color: const Color(
-                                                                  0xFFCFCFCF),
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
-                                                              fontSize: 12.0,
+                                                            Text(
+                                                              row.url!,
+                                                              maxLines: 1,
+                                                              overflow: TextOverflow.ellipsis,
+                                                              textAlign: TextAlign.start,
+                                                              style: GoogleFonts.getFont(
+                                                                'Inter',
+                                                                color: const Color(0xFFCFCFCF),
+                                                                fontWeight: FontWeight.w500,
+                                                                fontSize: 12.0,
+                                                              ),
                                                             ),
-                                                          ),
-                                                          Text(
-                                                            row.description!,
-                                                            textAlign:
-                                                                TextAlign.start,
-                                                            maxLines: 2,
-                                                            overflow:
-                                                                TextOverflow
-                                                                    .ellipsis,
-                                                            style: GoogleFonts
-                                                                .getFont(
-                                                              'Inter',
-                                                              color:
-                                                                  Colors.black,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .normal,
-                                                              fontSize: 13.0,
+                                                            Text(
+                                                              row.description!,
+                                                              textAlign: TextAlign.start,
+                                                              maxLines: 2,
+                                                              overflow: TextOverflow.ellipsis,
+                                                              style: GoogleFonts.getFont(
+                                                                'Inter',
+                                                                color: Colors.black,
+                                                                fontWeight: FontWeight.normal,
+                                                                fontSize: 13.0,
+                                                              ),
                                                             ),
-                                                          ),
-                                                          SizedBox(height: 5.h),
-                                                          Text(
-                                                            'Selengkapnya',
-                                                            textAlign:
-                                                                TextAlign.start,
-                                                            style: GoogleFonts
-                                                                .getFont(
-                                                              'Inter',
-                                                              color: const Color(
-                                                                  0xFF995F25),
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
-                                                              fontSize: 13.0,
-                                                            ),
-                                                          )
-                                                        ],
+                                                            SizedBox(height: 5.h),
+                                                            Text(
+                                                              'Selengkapnya',
+                                                              textAlign: TextAlign.start,
+                                                              style: GoogleFonts.getFont(
+                                                                'Inter',
+                                                                color: const Color(0xFF995F25),
+                                                                fontWeight: FontWeight.w500,
+                                                                fontSize: 13.0,
+                                                              ),
+                                                            )
+                                                          ],
+                                                        ),
                                                       ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ],
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
                                             ),
                                           ),
                                         ),
