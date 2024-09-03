@@ -32,6 +32,11 @@ class _PageDetailScreenState extends State<PageDetailScreen> {
   int letterSpacing = 0;
   int textAlign = 0;
   bool isOpenDyslexic = false;
+  bool invertColor = false;
+  bool caption = false;
+  bool blockImage = false;
+  bool focus = false;
+  bool readingMode = false;
   ProfileAccessibility profileAccessibility = ProfileAccessibility.none;
 
   late InAppWebViewController? _webViewController;
@@ -125,6 +130,7 @@ class _PageDetailScreenState extends State<PageDetailScreen> {
                   if (_webViewController != null) {
                     PageService().initializeFontSize(_webViewController!);
                     PageService().initializeOpenDyslexicFont(_webViewController!);
+                    PageService().initialCaption(_webViewController!);
                   }
                 },
               ),
@@ -447,176 +453,6 @@ class _PageDetailScreenState extends State<PageDetailScreen> {
                               onTap: () {
                                 showMaterialModalBottomSheet(
                                   context: context,
-                                  builder: (context) => StatefulBuilder(
-                                    builder: (BuildContext context, StateSetter setState) {
-                                      return SizedBox(
-                                        height: 380.h,
-                                        child: SingleChildScrollView(
-                                          controller: ModalScrollController.of(context),
-                                          child: Column(
-                                            children: [
-                                              SizedBox(height: 15.h),
-                                              Text(
-                                                'Pengaturan Konten',
-                                                textAlign: TextAlign.center,
-                                                style: FlutterFlowTheme.of(context).bodyMedium.override(
-                                                      fontFamily: 'Inter',
-                                                      color: Color(0xFF303030),
-                                                      fontSize: 18.0,
-                                                      letterSpacing: 0.0,
-                                                      fontWeight: FontWeight.bold,
-                                                      useGoogleFonts: GoogleFonts.asMap().containsKey('Inter'),
-                                                    ),
-                                              ),
-                                              SizedBox(height: 20),
-                                              ListTile(
-                                                title: Text(
-                                                  'Font Ramah Disleksia',
-                                                  style: FlutterFlowTheme.of(context).bodyMedium.override(
-                                                        fontFamily: 'Inter',
-                                                        color: Colors.black,
-                                                        fontSize: 16.0,
-                                                        useGoogleFonts: GoogleFonts.asMap().containsKey('Inter'),
-                                                      ),
-                                                ),
-                                                trailing: Switch(
-                                                  value: isOpenDyslexic,
-                                                  activeColor: Color(0xFFCD7F32),
-                                                  inactiveThumbColor: Color(0xFFCD7F32),
-                                                  onChanged: (bool value) {
-                                                    setState(() {
-                                                      PageService().toggleOpenDyslexicFont(_webViewController!);
-                                                      isOpenDyslexic = value;
-                                                    });
-                                                  },
-                                                ),
-                                              ),
-                                              ListTile(
-                                                onTap: () {
-                                                  setState(() {
-                                                    if (_webViewController != null) {
-                                                      setState(() {
-                                                        PageService().toggleLetterSpacing(_webViewController!);
-                                                        letterSpacing = (letterSpacing + 1) % 3;
-                                                      });
-                                                    }
-                                                  });
-                                                },
-                                                title: Text(
-                                                  'Jarak Spasi',
-                                                  style: FlutterFlowTheme.of(context).bodyMedium.override(
-                                                        fontFamily: 'Inter',
-                                                        color: Colors.black,
-                                                        fontSize: 16.0,
-                                                        useGoogleFonts: GoogleFonts.asMap().containsKey('Inter'),
-                                                      ),
-                                                ),
-                                                trailing: Text(
-                                                  getLetterSpacing(),
-                                                  style: FlutterFlowTheme.of(context).bodyMedium.override(
-                                                        fontFamily: 'Inter',
-                                                        color: Color(0xFFCD7F32),
-                                                        fontSize: 14.0,
-                                                        useGoogleFonts: GoogleFonts.asMap().containsKey('Inter'),
-                                                      ),
-                                                ),
-                                              ),
-                                              ListTile(
-                                                onTap: () {
-                                                  setState(() {
-                                                    if (_webViewController != null) {
-                                                      setState(() {
-                                                        PageService().toggleLineSpacing(_webViewController!);
-                                                        lineSpacing = (lineSpacing + 1) % 3;
-                                                      });
-                                                    }
-                                                  });
-                                                },
-                                                title: Text(
-                                                  'Jarak Baris',
-                                                  style: FlutterFlowTheme.of(context).bodyMedium.override(
-                                                        fontFamily: 'Inter',
-                                                        color: Colors.black,
-                                                        fontSize: 16.0,
-                                                        useGoogleFonts: GoogleFonts.asMap().containsKey('Inter'),
-                                                      ),
-                                                ),
-                                                trailing: Text(
-                                                  getLineSpacingLabel(),
-                                                  style: FlutterFlowTheme.of(context).bodyMedium.override(
-                                                        fontFamily: 'Inter',
-                                                        color: Color(0xFFCD7F32),
-                                                        fontSize: 14.0,
-                                                        useGoogleFonts: GoogleFonts.asMap().containsKey('Inter'),
-                                                      ),
-                                                ),
-                                              ),
-                                              ListTile(
-                                                onTap: () {
-                                                  if (_webViewController != null) {
-                                                    setState(() {
-                                                      PageService().toggleFontSize(_webViewController!);
-                                                      font = (font + 1) % 3;
-                                                    });
-                                                  }
-                                                },
-                                                title: Text(
-                                                  'Ukuran Teks',
-                                                  style: FlutterFlowTheme.of(context).bodyMedium.override(
-                                                        fontFamily: 'Inter',
-                                                        color: Colors.black,
-                                                        fontSize: 16.0,
-                                                        useGoogleFonts: GoogleFonts.asMap().containsKey('Inter'),
-                                                      ),
-                                                ),
-                                                trailing: Text(
-                                                  getFontLabel(),
-                                                  style: FlutterFlowTheme.of(context).bodyMedium.override(
-                                                        fontFamily: 'Inter',
-                                                        color: Color(0xFFCD7F32),
-                                                        fontSize: 14.0,
-                                                        useGoogleFonts: GoogleFonts.asMap().containsKey('Inter'),
-                                                      ),
-                                                ),
-                                              ),
-                                              ListTile(
-                                                onTap: () {
-                                                  if (_webViewController != null) {
-                                                    setState(() {
-                                                      PageService().toggleTextAlign(_webViewController!);
-                                                      textAlign = (textAlign + 1) % 4;
-                                                    });
-                                                  }
-                                                },
-                                                title: Text(
-                                                  'Ratakan Teks',
-                                                  style: FlutterFlowTheme.of(context).bodyMedium.override(
-                                                        fontFamily: 'Inter',
-                                                        color: Colors.black,
-                                                        fontSize: 16.0,
-                                                        useGoogleFonts: GoogleFonts.asMap().containsKey('Inter'),
-                                                      ),
-                                                ),
-                                                trailing: Text(
-                                                  getTextAlignLabel(),
-                                                  style: FlutterFlowTheme.of(context).bodyMedium.override(
-                                                        fontFamily: 'Inter',
-                                                        color: Color(0xFFCD7F32),
-                                                        fontSize: 14.0,
-                                                        useGoogleFonts: GoogleFonts.asMap().containsKey('Inter'),
-                                                      ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                );
-                                return;
-                                showMaterialModalBottomSheet(
-                                  context: context,
                                   builder: (context) => StatefulBuilder(builder: (BuildContext context, StateSetter setState) {
                                     return SizedBox(
                                       height: 250.h,
@@ -641,6 +477,175 @@ class _PageDetailScreenState extends State<PageDetailScreen> {
                                             ListTile(
                                               onTap: () {
                                                 Navigator.of(context).pop();
+                                                showMaterialModalBottomSheet(
+                                                  context: context,
+                                                  builder: (context) => StatefulBuilder(
+                                                    builder: (BuildContext context, StateSetter setState) {
+                                                      return SizedBox(
+                                                        height: 380.h,
+                                                        child: SingleChildScrollView(
+                                                          controller: ModalScrollController.of(context),
+                                                          child: Column(
+                                                            children: [
+                                                              SizedBox(height: 15.h),
+                                                              Text(
+                                                                'Pengaturan Konten',
+                                                                textAlign: TextAlign.center,
+                                                                style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                                                      fontFamily: 'Inter',
+                                                                      color: Color(0xFF303030),
+                                                                      fontSize: 18.0,
+                                                                      letterSpacing: 0.0,
+                                                                      fontWeight: FontWeight.bold,
+                                                                      useGoogleFonts: GoogleFonts.asMap().containsKey('Inter'),
+                                                                    ),
+                                                              ),
+                                                              SizedBox(height: 20),
+                                                              ListTile(
+                                                                title: Text(
+                                                                  'Font Ramah Disleksia',
+                                                                  style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                                                        fontFamily: 'Inter',
+                                                                        color: Colors.black,
+                                                                        fontSize: 16.0,
+                                                                        useGoogleFonts: GoogleFonts.asMap().containsKey('Inter'),
+                                                                      ),
+                                                                ),
+                                                                trailing: Switch(
+                                                                  value: isOpenDyslexic,
+                                                                  activeColor: Color(0xFFCD7F32),
+                                                                  inactiveThumbColor: Color(0xFFCD7F32),
+                                                                  onChanged: (bool value) {
+                                                                    setState(() {
+                                                                      PageService().toggleOpenDyslexicFont(_webViewController!);
+                                                                      isOpenDyslexic = value;
+                                                                    });
+                                                                  },
+                                                                ),
+                                                              ),
+                                                              ListTile(
+                                                                onTap: () {
+                                                                  setState(() {
+                                                                    if (_webViewController != null) {
+                                                                      setState(() {
+                                                                        PageService().toggleLetterSpacing(_webViewController!);
+                                                                        letterSpacing = (letterSpacing + 1) % 3;
+                                                                      });
+                                                                    }
+                                                                  });
+                                                                },
+                                                                title: Text(
+                                                                  'Jarak Spasi',
+                                                                  style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                                                        fontFamily: 'Inter',
+                                                                        color: Colors.black,
+                                                                        fontSize: 16.0,
+                                                                        useGoogleFonts: GoogleFonts.asMap().containsKey('Inter'),
+                                                                      ),
+                                                                ),
+                                                                trailing: Text(
+                                                                  getLetterSpacing(),
+                                                                  style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                                                        fontFamily: 'Inter',
+                                                                        color: Color(0xFFCD7F32),
+                                                                        fontSize: 14.0,
+                                                                        useGoogleFonts: GoogleFonts.asMap().containsKey('Inter'),
+                                                                      ),
+                                                                ),
+                                                              ),
+                                                              ListTile(
+                                                                onTap: () {
+                                                                  setState(() {
+                                                                    if (_webViewController != null) {
+                                                                      setState(() {
+                                                                        PageService().toggleLineSpacing(_webViewController!);
+                                                                        lineSpacing = (lineSpacing + 1) % 3;
+                                                                      });
+                                                                    }
+                                                                  });
+                                                                },
+                                                                title: Text(
+                                                                  'Jarak Baris',
+                                                                  style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                                                        fontFamily: 'Inter',
+                                                                        color: Colors.black,
+                                                                        fontSize: 16.0,
+                                                                        useGoogleFonts: GoogleFonts.asMap().containsKey('Inter'),
+                                                                      ),
+                                                                ),
+                                                                trailing: Text(
+                                                                  getLineSpacingLabel(),
+                                                                  style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                                                        fontFamily: 'Inter',
+                                                                        color: Color(0xFFCD7F32),
+                                                                        fontSize: 14.0,
+                                                                        useGoogleFonts: GoogleFonts.asMap().containsKey('Inter'),
+                                                                      ),
+                                                                ),
+                                                              ),
+                                                              ListTile(
+                                                                onTap: () {
+                                                                  if (_webViewController != null) {
+                                                                    setState(() {
+                                                                      PageService().toggleFontSize(_webViewController!);
+                                                                      font = (font + 1) % 3;
+                                                                    });
+                                                                  }
+                                                                },
+                                                                title: Text(
+                                                                  'Ukuran Teks',
+                                                                  style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                                                        fontFamily: 'Inter',
+                                                                        color: Colors.black,
+                                                                        fontSize: 16.0,
+                                                                        useGoogleFonts: GoogleFonts.asMap().containsKey('Inter'),
+                                                                      ),
+                                                                ),
+                                                                trailing: Text(
+                                                                  getFontLabel(),
+                                                                  style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                                                        fontFamily: 'Inter',
+                                                                        color: Color(0xFFCD7F32),
+                                                                        fontSize: 14.0,
+                                                                        useGoogleFonts: GoogleFonts.asMap().containsKey('Inter'),
+                                                                      ),
+                                                                ),
+                                                              ),
+                                                              ListTile(
+                                                                onTap: () {
+                                                                  if (_webViewController != null) {
+                                                                    setState(() {
+                                                                      PageService().toggleTextAlign(_webViewController!);
+                                                                      textAlign = (textAlign + 1) % 4;
+                                                                    });
+                                                                  }
+                                                                },
+                                                                title: Text(
+                                                                  'Ratakan Teks',
+                                                                  style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                                                        fontFamily: 'Inter',
+                                                                        color: Colors.black,
+                                                                        fontSize: 16.0,
+                                                                        useGoogleFonts: GoogleFonts.asMap().containsKey('Inter'),
+                                                                      ),
+                                                                ),
+                                                                trailing: Text(
+                                                                  getTextAlignLabel(),
+                                                                  style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                                                        fontFamily: 'Inter',
+                                                                        color: Color(0xFFCD7F32),
+                                                                        fontSize: 14.0,
+                                                                        useGoogleFonts: GoogleFonts.asMap().containsKey('Inter'),
+                                                                      ),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      );
+                                                    },
+                                                  ),
+                                                );
                                               },
                                               title: Text(
                                                 "Pengaturan Konten",
@@ -656,7 +661,97 @@ class _PageDetailScreenState extends State<PageDetailScreen> {
                                               trailing: Icon(Icons.keyboard_arrow_right_outlined),
                                             ),
                                             ListTile(
-                                              onTap: () {},
+                                              onTap: () {
+                                                Navigator.of(context).pop();
+
+                                                showMaterialModalBottomSheet(
+                                                  context: context,
+                                                  builder: (context) => StatefulBuilder(
+                                                    builder: (BuildContext context, StateSetter setState) {
+                                                      return SizedBox(
+                                                        height: 200.h,
+                                                        child: SingleChildScrollView(
+                                                          controller: ModalScrollController.of(context),
+                                                          child: Column(
+                                                            children: [
+                                                              SizedBox(height: 15.h),
+                                                              Text(
+                                                                'Pengaturan Warna',
+                                                                textAlign: TextAlign.center,
+                                                                style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                                                      fontFamily: 'Inter',
+                                                                      color: Color(0xFF303030),
+                                                                      fontSize: 18.0,
+                                                                      letterSpacing: 0.0,
+                                                                      fontWeight: FontWeight.bold,
+                                                                      useGoogleFonts: GoogleFonts.asMap().containsKey('Inter'),
+                                                                    ),
+                                                              ),
+                                                              SizedBox(height: 20),
+                                                              ListTile(
+                                                                title: Text(
+                                                                  'Inversi Warna',
+                                                                  style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                                                        fontFamily: 'Inter',
+                                                                        color: Colors.black,
+                                                                        fontSize: 16.0,
+                                                                        useGoogleFonts: GoogleFonts.asMap().containsKey('Inter'),
+                                                                      ),
+                                                                ),
+                                                                trailing: Switch(
+                                                                  value: invertColor,
+                                                                  activeColor: Color(0xFFCD7F32),
+                                                                  inactiveThumbColor: Color(0xFFCD7F32),
+                                                                  onChanged: (bool value) {
+                                                                    setState(() {
+                                                                      if (_webViewController != null) {
+                                                                        setState(() {
+                                                                          PageService().toggleInvertColor(_webViewController!);
+                                                                          invertColor = !invertColor;
+                                                                        });
+                                                                      }
+                                                                    });
+                                                                  },
+                                                                ),
+                                                              ),
+                                                              ListTile(
+                                                                onTap: () {
+                                                                  setState(() {
+                                                                    if (_webViewController != null) {
+                                                                      setState(() {
+                                                                        PageService().toggleSaturation(_webViewController!);
+                                                                        saturation = (saturation + 1) % 4;
+                                                                      });
+                                                                    }
+                                                                  });
+                                                                },
+                                                                title: Text(
+                                                                  'Saturasi',
+                                                                  style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                                                        fontFamily: 'Inter',
+                                                                        color: Colors.black,
+                                                                        fontSize: 16.0,
+                                                                        useGoogleFonts: GoogleFonts.asMap().containsKey('Inter'),
+                                                                      ),
+                                                                ),
+                                                                trailing: Text(
+                                                                  getSaturationLabel(),
+                                                                  style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                                                        fontFamily: 'Inter',
+                                                                        color: Color(0xFFCD7F32),
+                                                                        fontSize: 14.0,
+                                                                        useGoogleFonts: GoogleFonts.asMap().containsKey('Inter'),
+                                                                      ),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      );
+                                                    },
+                                                  ),
+                                                );
+                                              },
                                               title: Text(
                                                 "Pengaturan Warna",
                                                 style: FlutterFlowTheme.of(context).bodyMedium.override(
@@ -671,7 +766,118 @@ class _PageDetailScreenState extends State<PageDetailScreen> {
                                               trailing: Icon(Icons.keyboard_arrow_right_outlined),
                                             ),
                                             ListTile(
-                                              onTap: () {},
+                                              onTap: () {
+                                                Navigator.of(context).pop();
+                                                showMaterialModalBottomSheet(
+                                                  context: context,
+                                                  builder: (context) => StatefulBuilder(
+                                                    builder: (BuildContext context, StateSetter setState) {
+                                                      return SizedBox(
+                                                        height: 250.h,
+                                                        child: SingleChildScrollView(
+                                                          controller: ModalScrollController.of(context),
+                                                          child: Column(
+                                                            children: [
+                                                              SizedBox(height: 15.h),
+                                                              Text(
+                                                                'Pengaturan Lainnya',
+                                                                textAlign: TextAlign.center,
+                                                                style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                                                      fontFamily: 'Inter',
+                                                                      color: Color(0xFF303030),
+                                                                      fontSize: 18.0,
+                                                                      letterSpacing: 0.0,
+                                                                      fontWeight: FontWeight.bold,
+                                                                      useGoogleFonts: GoogleFonts.asMap().containsKey('Inter'),
+                                                                    ),
+                                                              ),
+                                                              SizedBox(height: 20),
+                                                              ListTile(
+                                                                title: Text(
+                                                                  'Caption',
+                                                                  style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                                                        fontFamily: 'Inter',
+                                                                        color: Colors.black,
+                                                                        fontSize: 16.0,
+                                                                        useGoogleFonts: GoogleFonts.asMap().containsKey('Inter'),
+                                                                      ),
+                                                                ),
+                                                                trailing: Switch(
+                                                                  value: caption,
+                                                                  activeColor: Color(0xFFCD7F32),
+                                                                  inactiveThumbColor: Color(0xFFCD7F32),
+                                                                  onChanged: (bool value) {
+                                                                    setState(() {
+                                                                      if (_webViewController != null) {
+                                                                        setState(() {
+                                                                          PageService().toggleCaption(_webViewController!);
+                                                                          caption = !caption;
+                                                                        });
+                                                                      }
+                                                                    });
+                                                                  },
+                                                                ),
+                                                              ),
+                                                              ListTile(
+                                                                title: Text(
+                                                                  'Sembunyikan Gambar',
+                                                                  style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                                                        fontFamily: 'Inter',
+                                                                        color: Colors.black,
+                                                                        fontSize: 16.0,
+                                                                        useGoogleFonts: GoogleFonts.asMap().containsKey('Inter'),
+                                                                      ),
+                                                                ),
+                                                                trailing: Switch(
+                                                                  value: blockImage,
+                                                                  activeColor: Color(0xFFCD7F32),
+                                                                  inactiveThumbColor: Color(0xFFCD7F32),
+                                                                  onChanged: (bool value) {
+                                                                    setState(() {
+                                                                      if (_webViewController != null) {
+                                                                        setState(() {
+                                                                          PageService().toggleBlockImage(_webViewController!);
+                                                                          blockImage = !blockImage;
+                                                                        });
+                                                                      }
+                                                                    });
+                                                                  },
+                                                                ),
+                                                              ),
+                                                              ListTile(
+                                                                title: Text(
+                                                                  'Spot Fokus',
+                                                                  style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                                                        fontFamily: 'Inter',
+                                                                        color: Colors.black,
+                                                                        fontSize: 16.0,
+                                                                        useGoogleFonts: GoogleFonts.asMap().containsKey('Inter'),
+                                                                      ),
+                                                                ),
+                                                                trailing: Switch(
+                                                                  value: focus,
+                                                                  activeColor: Color(0xFFCD7F32),
+                                                                  inactiveThumbColor: Color(0xFFCD7F32),
+                                                                  onChanged: (bool value) {
+                                                                    setState(() {
+                                                                      if (_webViewController != null) {
+                                                                        setState(() {
+                                                                          PageService().toggleSpotFocus(_webViewController!);
+                                                                          focus = !focus;
+                                                                        });
+                                                                      }
+                                                                    });
+                                                                  },
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      );
+                                                    },
+                                                  ),
+                                                );
+                                              },
                                               title: Text(
                                                 "Lainnya",
                                                 style: FlutterFlowTheme.of(context).bodyMedium.override(

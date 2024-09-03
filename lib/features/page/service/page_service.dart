@@ -328,10 +328,306 @@ class PageService {
 
       // Simpan langkah saat ini di localStorage
       localStorage.setItem('textAlignStep', textAlignStep);
+    }
+
+    // Contoh penggunaan (misalnya saat tombol diklik)
+    toggleTextAlign();
+  ''');
   }
 
-  // Contoh penggunaan (misalnya saat tombol diklik)
-  toggleTextAlign();
+  void toggleInvertColor(InAppWebViewController controller) async {
+    await controller.evaluateJavascript(source: '''
+    function toggleInvertColors() {
+        // Cek apakah style element untuk invert color sudah ada
+        let invertStyle = document.getElementById('invert-colors-style');
+        
+        if (invertStyle) {
+            // Jika sudah ada, hapus elemen style tersebut (reset ke warna normal)
+            invertStyle.remove();
+            localStorage.removeItem('invertColorsEnabled');
+        } else {
+            // Jika belum ada, buat elemen style baru untuk invert color
+            invertStyle = document.createElement('style');
+            invertStyle.id = 'invert-colors-style';
+            invertStyle.textContent = `
+                html {
+                    filter: invert(1) hue-rotate(180deg);
+                    background-color: black;
+                }
+                img, video, svg, iframe, picture, object, embed {
+                    filter: invert(1) hue-rotate(180deg) !important;
+                }
+            `;
+            document.head.appendChild(invertStyle);
+            localStorage.setItem('invertColorsEnabled', 'true');
+        }
+    }
+
+    // Contoh penggunaan (misalnya saat tombol diklik)
+    toggleInvertColors();
+  ''');
+  }
+
+  void toggleCaption(InAppWebViewController controller) async {
+    await controller.evaluateJavascript(source: '''
+      function toggleImageTooltips() {
+        // Cek apakah tooltip sudah ada di halaman
+        let tooltipsExist = document.querySelector('.image-tooltip') !== null;
+
+        if (tooltipsExist) {
+          // Jika tooltip ada, hapus semua
+          document.querySelectorAll('.image-tooltip').forEach((tooltip) => tooltip.remove());
+        } else {
+          // Jika tidak ada tooltip, tambahkan tooltips
+          const images = document.querySelectorAll('img');
+
+          images.forEach((img) => {
+            const tooltipText = img.alt || img.getAttribute('data-title') || 'No description available';
+
+            const tooltip = document.createElement('span');
+            tooltip.className = 'image-tooltip';
+            tooltip.textContent = tooltipText;
+
+            img.parentElement.style.position = 'relative';
+            img.parentElement.appendChild(tooltip);
+
+            tooltip.style.display = 'block';
+          });
+        }
+      }
+
+      // Panggil fungsi toggle saat halaman dimuat atau tombol diklik
+      toggleImageTooltips();
+  ''');
+  }
+
+  void toggleBlockImage(InAppWebViewController controller) async {
+    await controller.evaluateJavascript(source: '''
+      function toggleImageBlockingWithObserver() {
+        // Cek apakah gambar telah diblokir
+        const imagesBlocked = localStorage.getItem('imagesBlockedObserver') === 'true';
+
+        if (imagesBlocked) {
+          // Jika gambar diblokir, kembalikan gambar
+          document.querySelectorAll('img[data-original-src]').forEach((img) => {
+            img.src = img.getAttribute('data-original-src');
+            img.removeAttribute('data-original-src');
+            img.style.display = ''; // Kembalikan gaya display asli
+          });
+
+          // Kembalikan latar belakang elemen yang sebelumnya berisi gambar
+          document.querySelectorAll('[data-original-bg]').forEach((element) => {
+            element.style.backgroundImage = element.getAttribute('data-original-bg');
+            element.removeAttribute('data-original-bg');
+          });
+
+          // Hentikan dan hapus observer
+          if (window.imageBlockObserver) {
+            window.imageBlockObserver.disconnect();
+            window.imageBlockObserver = null;
+          }
+
+          // Hapus tanda bahwa gambar diblokir
+          localStorage.removeItem('imagesBlockedObserver');
+        } else {
+          // Fungsi untuk memblokir gambar
+          function blockImages() {
+            document.querySelectorAll('img').forEach((img) => {
+              if (!img.hasAttribute('data-original-src')) {
+                img.setAttribute('data-original-src', img.src);
+                img.src = ''; // Blokir gambar dengan mengosongkan src
+                img.style.display = 'none'; // Hapus gambar secara visual dari halaman
+              }
+            });
+
+            // Blokir latar belakang elemen yang berisi gambar
+            document.querySelectorAll('*').forEach((element) => {
+              const bgImage = window.getComputedStyle(element).backgroundImage;
+              if (bgImage && bgImage !== 'none' && !element.hasAttribute('data-original-bg')) {
+                element.setAttribute('data-original-bg', bgImage);
+                element.style.backgroundImage = 'none'; // Hapus gambar latar belakang
+              }
+            });
+          }
+
+          // Blokir gambar yang ada saat ini
+          blockImages();
+
+          // Buat observer untuk memonitor perubahan pada DOM
+          window.imageBlockObserver = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+              if (mutation.addedNodes.length > 0) {
+                blockImages();
+              }
+            });
+          });
+
+          // Mulai observer pada seluruh dokumen
+          window.imageBlockObserver.observe(document.body, {
+            childList: true,
+            subtree: true,
+          });
+
+          // Tandai bahwa gambar telah diblokir
+          localStorage.setItem('imagesBlockedObserver', 'true');
+        }
+      }
+
+      // Panggil fungsi toggle
+      toggleImageBlockingWithObserver();
+      ''');
+  }
+
+  void initialCaption(InAppWebViewController controller) async {
+    await controller.evaluateJavascript(source: '''
+        (function() {
+            const style = document.createElement('style');
+            style.textContent = \`
+              .image-tooltip {
+                display: block;
+                position: absolute;
+                background-color: rgba(0, 0, 0, 0.7);
+                color: #fff;
+                padding: 5px;
+                border-radius: 5px;
+                font-size: 12px;
+                max-width: 200px;
+                text-align: center;
+                z-index: 1000;
+                top: 100%;
+                left: 50%;
+                transform: translateX(-50%);
+                margin-top: 5px;
+              }
+
+              img {
+                display: inline-block;
+                position: relative;
+              }
+            \`;
+            document.head.appendChild(style);
+          })();
+  ''');
+  }
+
+  void toggleSpotFocus(InAppWebViewController controller) async {
+    await controller.evaluateJavascript(source: '''
+      function toggleSpotFocus() {
+        // Cek apakah mode fokus sudah aktif
+        const spotFocusEnabled = document.getElementById('spot-focus-overlay');
+
+        if (spotFocusEnabled) {
+          // Jika aktif, hapus elemen overlay
+          document.getElementById('spot-focus-overlay').remove();
+          localStorage.removeItem('spotFocusEnabled');
+        } else {
+          // Jika tidak aktif, buat dan tambahkan elemen overlay ke body
+          const overlay = document.createElement('div');
+          overlay.id = 'spot-focus-overlay';
+          overlay.style.position = 'fixed';
+          overlay.style.top = '0';
+          overlay.style.left = '0';
+          overlay.style.width = '100%';
+          overlay.style.height = '100%';
+          overlay.style.backgroundColor = 'rgba(0, 0, 0, 0)'; // Layar menjadi gelap
+          overlay.style.pointerEvents = 'none'; // Jangan ganggu interaksi pengguna di elemen lain
+          overlay.style.zIndex = '9999'; // Pastikan overlay berada di atas semua elemen lainnya
+
+          // Tambahkan elemen fokus persegi panjang
+          const focusArea = document.createElement('div');
+          focusArea.id = 'focus-area';
+          focusArea.style.position = 'absolute';
+          focusArea.style.width = '300px'; // Lebar fokus area
+          focusArea.style.height = '150px'; // Tinggi fokus area
+          focusArea.style.backgroundColor = 'transparent'; // Area fokus transparan
+          focusArea.style.boxShadow = '0 0 0 9999px rgba(0, 0, 0, 0.9)'; // Buat layar di luar area fokus menjadi gelap
+          focusArea.style.borderRadius = '10px'; // Opsi untuk memberikan border-radius
+          focusArea.style.pointerEvents = 'auto';
+
+          // Tambahkan elemen fokus ke overlay
+          overlay.appendChild(focusArea);
+          document.body.appendChild(overlay);
+
+          // Simpan status fokus di localStorage
+          localStorage.setItem('spotFocusEnabled', 'true');
+
+          // Update posisi area fokus saat kursor bergerak
+          document.addEventListener('mousemove', updateFocusAreaPosition);
+
+          // Fungsi untuk memperbarui posisi area fokus
+          function updateFocusAreaPosition(event) {
+            const x = event.clientX - (focusArea.offsetWidth / 2);
+            const y = event.clientY - (focusArea.offsetHeight / 2);
+            focusArea.style.left = x + `px`;
+            focusArea.style.top = y + `px`;
+          }
+        }
+      }
+
+      // Panggil fungsi toggle saat diaktifkan
+      toggleSpotFocus();
+  ''');
+  }
+
+  void toggleReading(InAppWebViewController controller) async {
+    await controller.evaluateJavascript(source: '''
+      function toggleReadingFocus() {
+        const focusEnabled = document.getElementById('reading-focus-overlay');
+
+        if (focusEnabled) {
+          // Jika aktif, hapus elemen overlay
+          document.getElementById('reading-focus-overlay').remove();
+          localStorage.removeItem('readingFocusEnabled');
+        } else {
+          // Jika tidak aktif, buat dan tambahkan elemen overlay ke body
+          const overlay = document.createElement('div');
+          overlay.id = 'reading-focus-overlay';
+          overlay.style.position = 'fixed';
+          overlay.style.top = '0';
+          overlay.style.left = '0';
+          overlay.style.width = '100%';
+          overlay.style.height = '100%';
+          overlay.style.backgroundColor = 'white'; // Latar belakang putih
+          overlay.style.color = 'black'; // Warna teks hitam untuk kontras yang baik
+          overlay.style.zIndex = '9999'; // Pastikan overlay berada di atas semua elemen lainnya
+          overlay.style.overflow = 'auto'; // Biarkan scroll jika konten lebih tinggi dari layar
+
+          // Hapus semua elemen non-teks
+          const allElements = document.querySelectorAll('*');
+          allElements.forEach((element) => {
+            const tagName = element.tagName.toLowerCase();
+            if (['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'span', 'a', 'li', 'div'].includes(tagName)) {
+              element.style.display = 'block'; // Tampilkan elemen teks
+              element.style.margin = '0'; // Hapus margin untuk elemen teks
+              element.style.padding = '0'; // Hapus padding untuk elemen teks
+            } else {
+              element.style.display = 'none'; // Sembunyikan elemen non-teks
+            }
+          });
+
+          // Buat kontainer untuk teks
+          const textContainer = document.createElement('div');
+          textContainer.id = 'text-container';
+          textContainer.style.padding = '20px'; // Padding untuk kontainer teks
+
+          // Salin teks dari elemen yang tersisa ke kontainer
+          const textElements = document.querySelectorAll('p, h1, h2, h3, h4, h5, h6, span, a, li, div');
+          textElements.forEach((element) => {
+            const clonedElement = element.cloneNode(true);
+            textContainer.appendChild(clonedElement);
+          });
+
+          // Tambahkan kontainer teks ke overlay
+          overlay.appendChild(textContainer);
+          document.body.appendChild(overlay);
+
+          // Simpan status fokus membaca di localStorage
+          localStorage.setItem('readingFocusEnabled', 'true');
+        }
+      }
+
+      // Panggil fungsi toggle saat diaktifkan
+      toggleReadingFocus();
   ''');
   }
 }
