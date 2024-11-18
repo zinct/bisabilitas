@@ -14,10 +14,8 @@ class DioApi extends Api {
     dio = Dio();
 
     // The following contains code for handling bad certificates.
-    (dio.httpClientAdapter as IOHttpClientAdapter).onHttpClientCreate =
-        (HttpClient client) {
-      client.badCertificateCallback =
-          (X509Certificate cert, String host, int port) => true;
+    (dio.httpClientAdapter as IOHttpClientAdapter).onHttpClientCreate = (HttpClient client) {
+      client.badCertificateCallback = (X509Certificate cert, String host, int port) => true;
       return client;
     };
 
@@ -29,22 +27,21 @@ class DioApi extends Api {
 
     dioCancelToken = CancelToken();
 
-    // dio.interceptors.add(
-    //   LogInterceptor(
-    //     responseBody: false,
-    //     requestHeader: false,
-    //     responseHeader: false,
-    //     request: false,
-    //     requestBody: true,
-    //   ),
-    // );
+    dio.interceptors.add(
+      LogInterceptor(
+        responseBody: true,
+        requestHeader: false,
+        responseHeader: false,
+        request: false,
+        requestBody: true,
+      ),
+    );
 
     // The following contains code for adding baseURL to dio.
     if (FlavorConfig.instance != null) {
       baseUrl = FlavorConfig.instance!.flavorValues.baseURL;
     } else {
-      throw Exception(
-          "Sometimes, an error occurs when trying to instantiate FlavorConfig.");
+      throw Exception("Sometimes, an error occurs when trying to instantiate FlavorConfig.");
     }
   }
 

@@ -1,25 +1,35 @@
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
-        {
-            "name": "bisabilitas",
-            "request": "launch",
-            "type": "dart"
-        },
-        {
-            "name": "bisabilitas (profile mode)",
-            "request": "launch",
-            "type": "dart",
-            "flutterMode": "profile"
-        },
-        {
-            "name": "bisabilitas (release mode)",
-            "request": "launch",
-            "type": "dart",
-            "flutterMode": "release"
-        }
-    ]
-}
+      {
+        "name": "Flutter Development",
+        "request": "launch",
+        "type": "dart",
+        "program": "lib/main_development.dart",
+        "flutterMode": "debug",
+        "noDebug": true,
+        "args": [
+          "--flavor",
+          "development",
+          "--target",
+          "lib/main_development.dart"
+        ]
+      },
+      {
+        "name": "Flutter Production",
+        "request": "launch",
+        "type": "dart",
+        "program": "lib/main_production.dart",
+        "flutterMode": "debug",
+        "noDebug": true,
+        "args": [
+          "--flavor",
+          "production",
+          "--target",
+          "lib/main_production.dart"
+        ]
+      }
+    ],
+    "compounds": []
+  }
+  

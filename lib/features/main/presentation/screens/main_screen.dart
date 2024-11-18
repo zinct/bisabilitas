@@ -8,9 +8,11 @@
 import 'dart:isolate';
 
 import 'package:bisabilitas/core/api/api.dart';
+import 'package:bisabilitas/core/constants/router.dart';
 import 'package:bisabilitas/core/models/base/base_model.dart';
 import 'package:bisabilitas/core/models/list/list_model.dart';
 import 'package:bisabilitas/core/widgets/touchable_opacity_widget.dart';
+import 'package:bisabilitas/features/account/domain/entities/profile/profile_entity.dart';
 import 'package:bisabilitas/features/main/presentation/screens/account_screen.dart';
 import 'package:bisabilitas/features/main/presentation/screens/bookmark_screen.dart';
 import 'package:bisabilitas/features/main/presentation/screens/home_screen.dart';
@@ -32,13 +34,16 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   int currentIndex = 0;
   bool isLoading = false;
+  bool isProfileLoading = false;
   List<PageEntity> pages = [];
+  ProfileEntity? profile;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     fetchPage();
+    fetchProfile();
   }
 
   void fetchPage() async {
@@ -53,11 +58,32 @@ class _MainScreenState extends State<MainScreen> {
       isLoading = false;
     });
 
-    final model =
-        ListModel.fromJson(response.data, (p0) => PageEntity.fromJson(p0));
+    final model = ListModel.fromJson(response.data, (p0) => PageEntity.fromJson(p0));
     if (model.success ?? false) {
       setState(() {
         pages = model.data!;
+      });
+    } else {}
+  }
+
+  void fetchProfile() async {
+    final _api = getIt<Api>();
+
+    setState(() {
+      isProfileLoading = true;
+    });
+    final response = await _api.get('profile');
+
+    setState(() {
+      isProfileLoading = false;
+    });
+
+    final model = BaseModel.fromJson(response.data);
+    if (model.success ?? false) {
+      final profileData = ProfileEntity.fromJson(model.data);
+
+      setState(() {
+        profile = profileData;
       });
     } else {}
   }
@@ -76,7 +102,9 @@ class _MainScreenState extends State<MainScreen> {
           return Future.delayed(Duration.zero);
         },
       ),
-      const AccountScreen(),
+      AccountScreen(
+        profile: profile,
+      ),
     ];
 
     return Scaffold(
@@ -135,20 +163,16 @@ class _MainScreenState extends State<MainScreen> {
                               ),
                             ),
                             Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  0.0, 8.0, 0.0, 0.0),
+                              padding: const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 0.0),
                               child: Text(
                                 'Beranda',
-                                style: FlutterFlowTheme.of(context)
-                                    .bodyMedium
-                                    .override(
+                                style: FlutterFlowTheme.of(context).bodyMedium.override(
                                       fontFamily: 'Plus Jakarta Sans',
                                       color: const Color(0xFF020617),
                                       fontSize: 12.0,
                                       letterSpacing: 0.0,
                                       fontWeight: FontWeight.w500,
-                                      useGoogleFonts: GoogleFonts.asMap()
-                                          .containsKey('Plus Jakarta Sans'),
+                                      useGoogleFonts: GoogleFonts.asMap().containsKey('Plus Jakarta Sans'),
                                     ),
                               ),
                             ),
@@ -160,9 +184,13 @@ class _MainScreenState extends State<MainScreen> {
                   Expanded(
                     child: TouchableOpacityWidget(
                       onTap: () {
-                        setState(() {
-                          currentIndex = 1;
-                        });
+                        if (profile == null) {
+                          Navigator.of(context).pushNamed(ROUTER.onboarding);
+                        } else {
+                          setState(() {
+                            currentIndex = 1;
+                          });
+                        }
                       },
                       child: Container(
                         height: MediaQuery.sizeOf(context).height * 1.0,
@@ -183,20 +211,16 @@ class _MainScreenState extends State<MainScreen> {
                               ),
                             ),
                             Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  0.0, 8.0, 0.0, 0.0),
+                              padding: const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 0.0),
                               child: Text(
                                 'Tersimpan',
-                                style: FlutterFlowTheme.of(context)
-                                    .bodyMedium
-                                    .override(
+                                style: FlutterFlowTheme.of(context).bodyMedium.override(
                                       fontFamily: 'Plus Jakarta Sans',
                                       color: const Color(0xFF020617),
                                       fontSize: 12.0,
                                       letterSpacing: 0.0,
                                       fontWeight: FontWeight.w500,
-                                      useGoogleFonts: GoogleFonts.asMap()
-                                          .containsKey('Plus Jakarta Sans'),
+                                      useGoogleFonts: GoogleFonts.asMap().containsKey('Plus Jakarta Sans'),
                                     ),
                               ),
                             ),
@@ -208,9 +232,13 @@ class _MainScreenState extends State<MainScreen> {
                   Expanded(
                     child: TouchableOpacityWidget(
                       onTap: () {
-                        setState(() {
-                          currentIndex = 2;
-                        });
+                        if (profile == null) {
+                          Navigator.of(context).pushNamed(ROUTER.onboarding);
+                        } else {
+                          setState(() {
+                            currentIndex = 2;
+                          });
+                        }
                       },
                       child: Container(
                         height: MediaQuery.sizeOf(context).height * 1.0,
@@ -231,20 +259,16 @@ class _MainScreenState extends State<MainScreen> {
                               ),
                             ),
                             Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  0.0, 8.0, 0.0, 0.0),
+                              padding: const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 0.0),
                               child: Text(
                                 'Pengaturan',
-                                style: FlutterFlowTheme.of(context)
-                                    .bodyMedium
-                                    .override(
+                                style: FlutterFlowTheme.of(context).bodyMedium.override(
                                       fontFamily: 'Plus Jakarta Sans',
                                       color: const Color(0xFF020617),
                                       fontSize: 12.0,
                                       letterSpacing: 0.0,
                                       fontWeight: FontWeight.w500,
-                                      useGoogleFonts: GoogleFonts.asMap()
-                                          .containsKey('Plus Jakarta Sans'),
+                                      useGoogleFonts: GoogleFonts.asMap().containsKey('Plus Jakarta Sans'),
                                     ),
                               ),
                             ),
@@ -268,6 +292,7 @@ class _MainScreenState extends State<MainScreen> {
 
                   showModalBottomSheet<void>(
                     context: context,
+                    isScrollControlled: true,
                     shape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.vertical(
                         top: Radius.circular(10),
@@ -275,165 +300,135 @@ class _MainScreenState extends State<MainScreen> {
                     ),
                     clipBehavior: Clip.antiAliasWithSaveLayer,
                     builder: (BuildContext context) {
-                      return StatefulBuilder(builder: (
-                        BuildContext context,
-                        StateSetter setState,
-                      ) {
-                        return Container(
-                          height: 300.h,
-                          padding: EdgeInsets.symmetric(horizontal: 24.w),
-                          color: Colors.white,
-                          child: Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.min,
-                              children: <Widget>[
-                                Text(
-                                  'Tambahkan URL',
-                                  textAlign: TextAlign.start,
-                                  style: GoogleFonts.getFont(
-                                    'Inter',
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 22.0,
+                      return Container(
+                        padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+                        child: StatefulBuilder(builder: (
+                          BuildContext context,
+                          StateSetter setState,
+                        ) {
+                          return Container(
+                            height: 300.h,
+                            padding: EdgeInsets.symmetric(horizontal: 24.w),
+                            color: Colors.white,
+                            child: Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  Text(
+                                    'Tambahkan URL',
+                                    textAlign: TextAlign.start,
+                                    style: GoogleFonts.getFont(
+                                      'Inter',
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 22.0,
+                                    ),
                                   ),
-                                ),
-                                SizedBox(height: 45.h),
-                                TextFormField(
-                                  controller: _pageController,
-                                  autofocus: true,
-                                  obscureText: false,
-                                  decoration: InputDecoration(
-                                    labelText: 'Link URL',
-                                    labelStyle: FlutterFlowTheme.of(context)
-                                        .labelMedium
-                                        .override(
-                                          fontFamily:
-                                              FlutterFlowTheme.of(context)
-                                                  .labelMediumFamily,
-                                          letterSpacing: 0.0,
-                                          useGoogleFonts: GoogleFonts.asMap()
-                                              .containsKey(
-                                                  FlutterFlowTheme.of(context)
-                                                      .labelMediumFamily),
+                                  SizedBox(height: 45.h),
+                                  TextFormField(
+                                    controller: _pageController,
+                                    autofocus: true,
+                                    obscureText: false,
+                                    decoration: InputDecoration(
+                                      labelText: 'Link URL',
+                                      labelStyle: FlutterFlowTheme.of(context).labelMedium.override(
+                                            fontFamily: FlutterFlowTheme.of(context).labelMediumFamily,
+                                            letterSpacing: 0.0,
+                                            useGoogleFonts: GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).labelMediumFamily),
+                                          ),
+                                      hintStyle: FlutterFlowTheme.of(context).labelMedium.override(
+                                            fontFamily: 'Plus Jakarta Sans',
+                                            letterSpacing: 0.0,
+                                            useGoogleFonts: GoogleFonts.asMap().containsKey('Plus Jakarta Sans'),
+                                          ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide: const BorderSide(
+                                          color: Color(0xFFE2E8F0),
+                                          width: 1.0,
                                         ),
-                                    hintStyle: FlutterFlowTheme.of(context)
-                                        .labelMedium
-                                        .override(
-                                          fontFamily: 'Plus Jakarta Sans',
-                                          letterSpacing: 0.0,
-                                          useGoogleFonts: GoogleFonts.asMap()
-                                              .containsKey('Plus Jakarta Sans'),
+                                        borderRadius: BorderRadius.circular(8.0),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                          color: FlutterFlowTheme.of(context).primary,
+                                          width: 1.0,
                                         ),
-                                    enabledBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(8.0),
+                                      ),
+                                      errorBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                          color: FlutterFlowTheme.of(context).error,
+                                          width: 1.0,
+                                        ),
+                                        borderRadius: BorderRadius.circular(8.0),
+                                      ),
+                                      focusedErrorBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                          color: FlutterFlowTheme.of(context).error,
+                                          width: 1.0,
+                                        ),
+                                        borderRadius: BorderRadius.circular(8.0),
+                                      ),
+                                    ),
+                                    style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                          fontFamily: FlutterFlowTheme.of(context).bodyMediumFamily,
+                                          letterSpacing: 0.0,
+                                          useGoogleFonts: GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodyMediumFamily),
+                                        ),
+                                  ),
+                                  SizedBox(height: 20.h),
+                                  FFButtonWidget(
+                                    showLoadingIndicator: true,
+                                    loading: isCreatePageLoading,
+                                    onPressed: () async {
+                                      try {
+                                        final api = getIt<Api>();
+
+                                        setState(() {
+                                          isCreatePageLoading = true;
+                                        });
+                                        final response = await api.post('page', formObj: {
+                                          'url': _pageController.text,
+                                        });
+                                        setState(() {
+                                          isCreatePageLoading = false;
+                                        });
+
+                                        final model = BaseModel.fromJson(response.data);
+
+                                        if (model.success ?? false) {
+                                          Navigator.pop(context);
+                                          _pageController.clear();
+                                          fetchPage();
+                                        } else {}
+                                      } catch (err) {}
+                                    },
+                                    text: 'Tambahkan',
+                                    options: FFButtonOptions(
+                                      width: MediaQuery.sizeOf(context).width * 1.0,
+                                      height: 50.0,
+                                      padding: const EdgeInsetsDirectional.fromSTEB(24.0, 0.0, 24.0, 0.0),
+                                      iconPadding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                                      color: const Color(0xFFCD7F32),
+                                      textStyle: FlutterFlowTheme.of(context).titleSmall.override(
+                                            fontFamily: FlutterFlowTheme.of(context).titleSmallFamily,
+                                            letterSpacing: 0.0,
+                                            useGoogleFonts: GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).titleSmallFamily),
+                                          ),
+                                      elevation: 0.0,
                                       borderSide: const BorderSide(
-                                        color: Color(0xFFE2E8F0),
+                                        color: Colors.transparent,
                                         width: 1.0,
                                       ),
                                       borderRadius: BorderRadius.circular(8.0),
                                     ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                        color: FlutterFlowTheme.of(context)
-                                            .primary,
-                                        width: 1.0,
-                                      ),
-                                      borderRadius: BorderRadius.circular(8.0),
-                                    ),
-                                    errorBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                        color:
-                                            FlutterFlowTheme.of(context).error,
-                                        width: 1.0,
-                                      ),
-                                      borderRadius: BorderRadius.circular(8.0),
-                                    ),
-                                    focusedErrorBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                        color:
-                                            FlutterFlowTheme.of(context).error,
-                                        width: 1.0,
-                                      ),
-                                      borderRadius: BorderRadius.circular(8.0),
-                                    ),
-                                  ),
-                                  style: FlutterFlowTheme.of(context)
-                                      .bodyMedium
-                                      .override(
-                                        fontFamily: FlutterFlowTheme.of(context)
-                                            .bodyMediumFamily,
-                                        letterSpacing: 0.0,
-                                        useGoogleFonts: GoogleFonts.asMap()
-                                            .containsKey(
-                                                FlutterFlowTheme.of(context)
-                                                    .bodyMediumFamily),
-                                      ),
-                                ),
-                                SizedBox(height: 20.h),
-                                FFButtonWidget(
-                                  showLoadingIndicator: true,
-                                  loading: isCreatePageLoading,
-                                  onPressed: () async {
-                                    try {
-                                      final api = getIt<Api>();
-
-                                      setState(() {
-                                        isCreatePageLoading = true;
-                                      });
-                                      final response =
-                                          await api.post('page', formObj: {
-                                        'url': _pageController.text,
-                                      });
-                                      setState(() {
-                                        isCreatePageLoading = false;
-                                      });
-
-                                      final model =
-                                          BaseModel.fromJson(response.data);
-
-                                      if (model.success ?? false) {
-                                        Navigator.pop(context);
-                                        _pageController.clear();
-                                        fetchPage();
-                                      } else {}
-                                    } catch (err) {}
-                                  },
-                                  text: 'Tambahkan',
-                                  options: FFButtonOptions(
-                                    width:
-                                        MediaQuery.sizeOf(context).width * 1.0,
-                                    height: 50.0,
-                                    padding:
-                                        const EdgeInsetsDirectional.fromSTEB(
-                                            24.0, 0.0, 24.0, 0.0),
-                                    iconPadding:
-                                        const EdgeInsetsDirectional.fromSTEB(
-                                            0.0, 0.0, 0.0, 0.0),
-                                    color: const Color(0xFFCD7F32),
-                                    textStyle: FlutterFlowTheme.of(context)
-                                        .titleSmall
-                                        .override(
-                                          fontFamily:
-                                              FlutterFlowTheme.of(context)
-                                                  .titleSmallFamily,
-                                          letterSpacing: 0.0,
-                                          useGoogleFonts: GoogleFonts.asMap()
-                                              .containsKey(
-                                                  FlutterFlowTheme.of(context)
-                                                      .titleSmallFamily),
-                                        ),
-                                    elevation: 0.0,
-                                    borderSide: const BorderSide(
-                                      color: Colors.transparent,
-                                      width: 1.0,
-                                    ),
-                                    borderRadius: BorderRadius.circular(8.0),
-                                  ),
-                                )
-                              ],
+                                  )
+                                ],
+                              ),
                             ),
-                          ),
-                        );
-                      });
+                          );
+                        }),
+                      );
                     },
                   );
                 },

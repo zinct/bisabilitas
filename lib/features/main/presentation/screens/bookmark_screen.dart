@@ -105,7 +105,7 @@ class BookmarkScreen extends StatelessWidget {
                                       borderRadius: BorderRadius.circular(12.0),
                                     ),
                                     child: Container(
-                                      height: 146.0.h,
+                                      height: 160.0.h,
                                       decoration: BoxDecoration(
                                         color: FlutterFlowTheme.of(context).secondaryBackground,
                                         borderRadius: BorderRadius.circular(12.0),
@@ -125,6 +125,14 @@ class BookmarkScreen extends StatelessWidget {
                                                     borderRadius: BorderRadius.circular(9.0),
                                                     child: Image.network(
                                                       row.image!,
+                                                      errorBuilder: (context, error, stackTrace) {
+                                                        return Image.network(
+                                                          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRKREcZ7HHA4nPfRJwXkrv0-i11G3uaxIGZVA&s",
+                                                          width: 90.0,
+                                                          height: 90.0,
+                                                          fit: BoxFit.cover,
+                                                        );
+                                                      },
                                                       width: 90.0,
                                                       height: 90.0,
                                                       fit: BoxFit.cover,

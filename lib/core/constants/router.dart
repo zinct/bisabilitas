@@ -7,4 +7,5 @@ class ROUTER {
   static const home = 'apps.screen.home';
   static const bookmark = 'apps.screen.bookmark';
   static const pageDetail = 'apps.screen.page.detail';
+  static const profile = 'apps.screen.profile';
 }

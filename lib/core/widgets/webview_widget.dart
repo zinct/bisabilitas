@@ -13,8 +13,7 @@ import '../resources/colors.dart';
 
 class WebViewWidget extends StatefulWidget {
   final Uri initialURI;
-  final void Function(InAppWebViewController, Uri?, bool?)?
-      onUpdateVisitedHistory;
+  final void Function(InAppWebViewController, Uri?, bool?)? onUpdateVisitedHistory;
   final void Function(InAppWebViewController, int)? onProgressChanged;
   final void Function(InAppWebViewController, Uri?)? onLoadStart;
   final void Function(InAppWebViewController, Uri?)? onLoadStop;
@@ -54,9 +53,7 @@ class _WebViewWidgetState extends State<WebViewWidget> {
               if (defaultTargetPlatform == TargetPlatform.android) {
                 webViewController.reload();
               } else if (defaultTargetPlatform == TargetPlatform.iOS) {
-                webViewController.loadUrl(
-                    urlRequest:
-                        URLRequest(url: await webViewController.getUrl()));
+                webViewController.loadUrl(urlRequest: URLRequest(url: await webViewController.getUrl()));
               }
             },
           );

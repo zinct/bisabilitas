@@ -5,16 +5,22 @@
 /// Created by Indra Mahesa https://github.com/zinct
 ///
 
+import 'package:bisabilitas/core/api/api.dart';
+import 'package:bisabilitas/core/models/base/base_model.dart';
 import 'package:bisabilitas/core/widgets/touchable_opacity_widget.dart';
 import 'package:bisabilitas/core/widgets/webview_widget.dart';
 import 'package:bisabilitas/features/page/service/page_service.dart';
 import 'package:bisabilitas/flutter_flow/flutter_flow_theme.dart';
+import 'package:bisabilitas/flutter_flow/flutter_flow_widgets.dart';
+import 'package:bisabilitas/injection_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:speech_to_text/speech_recognition_result.dart';
+import 'package:speech_to_text/speech_to_text.dart';
 
 class PageDetailScreen extends StatefulWidget {
   const PageDetailScreen({super.key});
@@ -37,9 +43,85 @@ class _PageDetailScreenState extends State<PageDetailScreen> {
   bool blockImage = false;
   bool focus = false;
   bool readingMode = false;
+  bool isNavigationSound = false;
+
+  int profil = 0;
   ProfileAccessibility profileAccessibility = ProfileAccessibility.none;
+  String? dictionaryText;
+  bool isDictionaryLoading = false;
+  TextEditingController dictionaryController = TextEditingController();
+
+  // Speech
+  SpeechToText _speechToText = SpeechToText();
+  bool _speechEnabled = true;
+  String _lastWords = '';
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _initSpeech();
+  }
+
+  void _initSpeech() async {
+    _speechEnabled = await _speechToText.initialize();
+    setState(() {});
+  }
+
+  void _stopListening() async {
+    print("STOP");
+    await _speechToText.stop();
+    setState(() {
+      isNavigationSound = false;
+    });
+  }
+
+  void _startListening() async {
+    await _speechToText.listen(onResult: _onSpeechResult);
+    setState(() {
+      isNavigationSound = true;
+    });
+  }
+
+  void _onSpeechResult(SpeechRecognitionResult result) {
+    setState(() {
+      _lastWords = result.recognizedWords;
+
+      if (result.recognizedWords.isNotEmpty) {
+        if (int.tryParse(result.recognizedWords) != null) {
+          PageService().removeNumbersFromElements(_webViewController!);
+          PageService().navigateWithNumber(_webViewController!, int.parse(result.recognizedWords));
+          isNavigationSound = false;
+        } else {
+          _startListening();
+        }
+      } else {
+        _startListening();
+      }
+    });
+  }
+  // End Of Speech
 
   late InAppWebViewController? _webViewController;
+
+  String getProfilLabel() {
+    switch (profileAccessibility) {
+      case ProfileAccessibility.none:
+        return "Default";
+      case ProfileAccessibility.blind:
+        return "Buta Total / Parsial";
+      case ProfileAccessibility.colorBlind:
+        return "Penglihatan Kurang";
+      case ProfileAccessibility.dyslexia:
+        return "Disleksia";
+      case ProfileAccessibility.epilepsy:
+        return "Epilepsi";
+      case ProfileAccessibility.adhd:
+        return "ADHD";
+      default:
+        return "-";
+    }
+  }
 
   String getSaturationLabel() {
     switch (saturation) {
@@ -113,7 +195,6 @@ class _PageDetailScreenState extends State<PageDetailScreen> {
   @override
   Widget build(BuildContext context) {
     final url = ModalRoute.of(context)!.settings.arguments as String;
-
     return Scaffold(
       appBar: AppBar(),
       body: SafeArea(
@@ -122,14 +203,19 @@ class _PageDetailScreenState extends State<PageDetailScreen> {
           children: [
             Expanded(
               child: WebViewWidget(
+                onConsoleMessage: (p0, p1) {
+                  print("CONSOLE WEB: ${p1.message}");
+                },
                 initialURI: Uri.parse(url),
                 onLoadStart: (controller, url) {
+                  print('object');
                   _webViewController = controller;
                 },
                 onLoadStop: (p0, p1) {
+                  print('object');
                   if (_webViewController != null) {
                     PageService().initializeFontSize(_webViewController!);
-                    PageService().initializeOpenDyslexicFont(_webViewController!);
+                    // PageService().initializeOpenDyslexicFont(_webViewController!);
                     PageService().initialCaption(_webViewController!);
                   }
                 },
@@ -183,6 +269,19 @@ class _PageDetailScreenState extends State<PageDetailScreen> {
                                     onChanged: (ProfileAccessibility? value) {
                                       setState(() {
                                         profileAccessibility = value!;
+                                        if (focus == true) {
+                                          focus = false;
+                                          PageService().toggleSpotFocus(_webViewController!);
+                                        }
+                                        if (font == 2) {
+                                          font = 0;
+                                          PageService().toggleFontSize(_webViewController!);
+                                          PageService().toggleFontSize(_webViewController!);
+                                        }
+                                        if (isOpenDyslexic == true) {
+                                          isOpenDyslexic = false;
+                                          PageService().toggleOpenDyslexicFont(_webViewController!);
+                                        }
                                       });
                                     },
                                     groupValue: profileAccessibility,
@@ -190,21 +289,15 @@ class _PageDetailScreenState extends State<PageDetailScreen> {
                                     value: ProfileAccessibility.none,
                                   ),
                                   ProfileAccessibilityOption(
-                                    imagePath: 'assets/images/buta.png',
-                                    onChanged: (ProfileAccessibility? value) {
-                                      setState(() {
-                                        profileAccessibility = value!;
-                                      });
-                                    },
-                                    groupValue: profileAccessibility,
-                                    label: "Buta Total / Parsial",
-                                    value: ProfileAccessibility.blind,
-                                  ),
-                                  ProfileAccessibilityOption(
                                     imagePath: 'assets/images/penglihatan.png',
                                     onChanged: (ProfileAccessibility? value) {
                                       setState(() {
                                         profileAccessibility = value!;
+                                        if (font != 2) {
+                                          font = 2;
+                                          PageService().toggleFontSize(_webViewController!);
+                                          PageService().toggleFontSize(_webViewController!);
+                                        }
                                       });
                                     },
                                     groupValue: profileAccessibility,
@@ -216,6 +309,10 @@ class _PageDetailScreenState extends State<PageDetailScreen> {
                                     onChanged: (ProfileAccessibility? value) {
                                       setState(() {
                                         profileAccessibility = value!;
+                                        if (isOpenDyslexic == false) {
+                                          isOpenDyslexic = true;
+                                          PageService().toggleOpenDyslexicFont(_webViewController!);
+                                        }
                                       });
                                     },
                                     groupValue: profileAccessibility,
@@ -227,6 +324,12 @@ class _PageDetailScreenState extends State<PageDetailScreen> {
                                     onChanged: (ProfileAccessibility? value) {
                                       setState(() {
                                         profileAccessibility = value!;
+                                        if (saturation != 3) {
+                                          saturation = 3;
+                                          PageService().toggleSaturation(_webViewController!);
+                                          PageService().toggleSaturation(_webViewController!);
+                                          PageService().toggleSaturation(_webViewController!);
+                                        }
                                       });
                                     },
                                     groupValue: profileAccessibility,
@@ -238,6 +341,10 @@ class _PageDetailScreenState extends State<PageDetailScreen> {
                                     onChanged: (ProfileAccessibility? value) {
                                       setState(() {
                                         profileAccessibility = value!;
+                                        if (focus == false) {
+                                          focus = true;
+                                          PageService().toggleSpotFocus(_webViewController!);
+                                        }
                                       });
                                     },
                                     groupValue: profileAccessibility,
@@ -252,38 +359,61 @@ class _PageDetailScreenState extends State<PageDetailScreen> {
                         }),
                       );
                     },
-                    child: Container(
-                      height: 48.h,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: Color(0XFFCD7F32),
-                      ),
-                      padding: EdgeInsets.symmetric(horizontal: 20.w),
-                      child: Center(
-                        child: Row(
-                          children: [
-                            Spacer(),
-                            Text(
-                              'Profil Aksesibilitas : Disleksia',
-                              textAlign: TextAlign.center,
-                              style: FlutterFlowTheme.of(context).bodyMedium.override(
-                                    fontFamily: 'Inter',
-                                    color: Colors.white,
-                                    fontSize: 14.0,
-                                    letterSpacing: 0.0,
-                                    fontWeight: FontWeight.w500,
-                                    useGoogleFonts: GoogleFonts.asMap().containsKey('Inter'),
+                    child: isNavigationSound
+                        ? Container(
+                            height: 48.h,
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              color: Colors.grey,
+                            ),
+                            padding: EdgeInsets.symmetric(horizontal: 20.w),
+                            child: Center(
+                              child: Text(
+                                '🎙️ Bisabilitas mendengarkan...',
+                                textAlign: TextAlign.center,
+                                style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                      fontFamily: 'Inter',
+                                      color: Colors.white,
+                                      fontSize: 14.0,
+                                      letterSpacing: 0.0,
+                                      fontWeight: FontWeight.w500,
+                                      useGoogleFonts: GoogleFonts.asMap().containsKey('Inter'),
+                                    ),
+                              ),
+                            ),
+                          )
+                        : Container(
+                            height: 48.h,
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              color: Color(0XFFCD7F32),
+                            ),
+                            padding: EdgeInsets.symmetric(horizontal: 20.w),
+                            child: Center(
+                              child: Row(
+                                children: [
+                                  Spacer(),
+                                  Text(
+                                    'Profil Aksesibilitas : ${getProfilLabel()}',
+                                    textAlign: TextAlign.center,
+                                    style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                          fontFamily: 'Inter',
+                                          color: Colors.white,
+                                          fontSize: 14.0,
+                                          letterSpacing: 0.0,
+                                          fontWeight: FontWeight.w500,
+                                          useGoogleFonts: GoogleFonts.asMap().containsKey('Inter'),
+                                        ),
                                   ),
+                                  Spacer(),
+                                  Icon(
+                                    Icons.keyboard_arrow_up_outlined,
+                                    color: Colors.white,
+                                  ),
+                                ],
+                              ),
                             ),
-                            Spacer(),
-                            Icon(
-                              Icons.keyboard_arrow_up_outlined,
-                              color: Colors.white,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
+                          ),
                   ),
                   Expanded(
                     child: Container(
@@ -293,22 +423,191 @@ class _PageDetailScreenState extends State<PageDetailScreen> {
                         children: [
                           Expanded(
                             child: TouchableOpacityWidget(
-                              onTap: () {},
+                              onTap: () {
+                                showModalBottomSheet<void>(
+                                  context: context,
+                                  isScrollControlled: true,
+                                  shape: const RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.vertical(
+                                      top: Radius.circular(10),
+                                    ),
+                                  ),
+                                  clipBehavior: Clip.antiAliasWithSaveLayer,
+                                  builder: (BuildContext context) {
+                                    return Container(
+                                      padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+                                      child: StatefulBuilder(builder: (
+                                        BuildContext context,
+                                        StateSetter setState,
+                                      ) {
+                                        return Container(
+                                          height: 400.h,
+                                          padding: EdgeInsets.symmetric(horizontal: 24.w),
+                                          color: Colors.white,
+                                          child: Center(
+                                            child: Column(
+                                              mainAxisAlignment: MainAxisAlignment.start,
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: <Widget>[
+                                                SizedBox(height: 20),
+                                                Text(
+                                                  'Kamus Bahasa',
+                                                  textAlign: TextAlign.start,
+                                                  style: GoogleFonts.getFont(
+                                                    'Inter',
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 18.0,
+                                                  ),
+                                                ),
+                                                dictionaryText == null ? Spacer() : Container(),
+                                                SizedBox(height: 15.h),
+                                                dictionaryText == null
+                                                    ? Container()
+                                                    : Flexible(
+                                                        child: Column(
+                                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                                          children: [
+                                                            Text(
+                                                              "Hasil : ",
+                                                              style: GoogleFonts.getFont('Inter', fontSize: 13.0, fontWeight: FontWeight.bold),
+                                                            ),
+                                                            Text(
+                                                              "$dictionaryText",
+                                                              style: GoogleFonts.getFont(
+                                                                'Inter',
+                                                                fontSize: 13.0,
+                                                                color: Color(0xFFCD7F32),
+                                                              ),
+                                                              maxLines: null, // Allows the text to wrap to next lines
+                                                              overflow: TextOverflow.visible, // Ensures text is visible when wrapped
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                TextFormField(
+                                                  controller: dictionaryController,
+                                                  autofocus: true,
+                                                  obscureText: false,
+                                                  decoration: InputDecoration(
+                                                    labelText: 'Kalimat / Kata',
+                                                    labelStyle: FlutterFlowTheme.of(context).labelMedium.override(
+                                                          fontFamily: FlutterFlowTheme.of(context).labelMediumFamily,
+                                                          letterSpacing: 0.0,
+                                                          useGoogleFonts: GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).labelMediumFamily),
+                                                        ),
+                                                    hintStyle: FlutterFlowTheme.of(context).labelMedium.override(
+                                                          fontFamily: 'Plus Jakarta Sans',
+                                                          letterSpacing: 0.0,
+                                                          useGoogleFonts: GoogleFonts.asMap().containsKey('Plus Jakarta Sans'),
+                                                        ),
+                                                    enabledBorder: OutlineInputBorder(
+                                                      borderSide: const BorderSide(
+                                                        color: Color(0xFFE2E8F0),
+                                                        width: 1.0,
+                                                      ),
+                                                      borderRadius: BorderRadius.circular(8.0),
+                                                    ),
+                                                    focusedBorder: OutlineInputBorder(
+                                                      borderSide: BorderSide(
+                                                        color: FlutterFlowTheme.of(context).primary,
+                                                        width: 1.0,
+                                                      ),
+                                                      borderRadius: BorderRadius.circular(8.0),
+                                                    ),
+                                                    errorBorder: OutlineInputBorder(
+                                                      borderSide: BorderSide(
+                                                        color: FlutterFlowTheme.of(context).error,
+                                                        width: 1.0,
+                                                      ),
+                                                      borderRadius: BorderRadius.circular(8.0),
+                                                    ),
+                                                    focusedErrorBorder: OutlineInputBorder(
+                                                      borderSide: BorderSide(
+                                                        color: FlutterFlowTheme.of(context).error,
+                                                        width: 1.0,
+                                                      ),
+                                                      borderRadius: BorderRadius.circular(8.0),
+                                                    ),
+                                                  ),
+                                                  style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                                        fontFamily: FlutterFlowTheme.of(context).bodyMediumFamily,
+                                                        letterSpacing: 0.0,
+                                                        useGoogleFonts: GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodyMediumFamily),
+                                                      ),
+                                                ),
+                                                SizedBox(height: 30),
+                                                FFButtonWidget(
+                                                  showLoadingIndicator: true,
+                                                  loading: isDictionaryLoading,
+                                                  onPressed: () async {
+                                                    try {
+                                                      final api = getIt<Api>();
+
+                                                      setState(() {
+                                                        isDictionaryLoading = true;
+                                                      });
+                                                      final response = await api.post('kbbi', formObj: {
+                                                        'text': dictionaryController.text,
+                                                      });
+                                                      setState(() {
+                                                        isDictionaryLoading = false;
+                                                      });
+
+                                                      final model = BaseModel.fromJson(response.data);
+
+                                                      if (model.success ?? false) {
+                                                        setState(() {
+                                                          dictionaryText = model.data['text'];
+                                                          print(dictionaryText);
+                                                        });
+                                                      } else {}
+                                                    } catch (err) {}
+                                                  },
+                                                  text: 'Tanyakan',
+                                                  options: FFButtonOptions(
+                                                    width: MediaQuery.sizeOf(context).width * 1.0,
+                                                    height: 50.0,
+                                                    padding: const EdgeInsetsDirectional.fromSTEB(24.0, 0.0, 24.0, 0.0),
+                                                    iconPadding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                                                    color: const Color(0xFFCD7F32),
+                                                    textStyle: FlutterFlowTheme.of(context).titleSmall.override(
+                                                          fontFamily: FlutterFlowTheme.of(context).titleSmallFamily,
+                                                          letterSpacing: 0.0,
+                                                          useGoogleFonts: GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).titleSmallFamily),
+                                                        ),
+                                                    elevation: 0.0,
+                                                    borderSide: const BorderSide(
+                                                      color: Colors.transparent,
+                                                      width: 1.0,
+                                                    ),
+                                                    borderRadius: BorderRadius.circular(8.0),
+                                                  ),
+                                                ),
+                                                SizedBox(height: 20),
+                                              ],
+                                            ),
+                                          ),
+                                        );
+                                      }),
+                                    );
+                                  },
+                                );
+                              },
                               child: Column(
                                 mainAxisSize: MainAxisSize.max,
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   ClipRRect(
-                                      borderRadius: BorderRadius.circular(8.0),
-                                      child: Image.asset(
-                                        'assets/images/asisten.png',
-                                        width: 26.w,
-                                        height: 26.w,
-                                      )),
+                                    borderRadius: BorderRadius.circular(8.0),
+                                    child: Icon(
+                                      Icons.menu_book_outlined,
+                                    ),
+                                  ),
                                   Padding(
                                     padding: const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 0.0),
                                     child: Text(
-                                      'Asisten AI',
+                                      'Kamus Bahasa',
                                       textAlign: TextAlign.center,
                                       style: FlutterFlowTheme.of(context).bodyMedium.override(
                                             fontFamily: 'Inter',
@@ -367,30 +666,31 @@ class _PageDetailScreenState extends State<PageDetailScreen> {
                           Expanded(
                             child: TouchableOpacityWidget(
                               onTap: () {
-                                setState(() {
-                                  if (_webViewController != null) {
-                                    setState(() {
-                                      PageService().toggleOpenDyslexicFont(_webViewController!);
-                                      isOpenDyslexic = !isOpenDyslexic;
-                                    });
+                                if (_speechToText.isNotListening) {
+                                  if (!isNavigationSound) {
+                                    PageService().addNumberToElement(_webViewController!);
                                   }
-                                });
+                                  _startListening();
+                                } else {
+                                  PageService().removeNumbersFromElements(_webViewController!);
+                                  setState(() {
+                                    _lastWords = "";
+                                  });
+                                  _stopListening();
+                                }
                               },
                               child: Column(
                                 mainAxisSize: MainAxisSize.max,
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   ClipRRect(
-                                      borderRadius: BorderRadius.circular(8.0),
-                                      child: Image.asset(
-                                        'assets/images/disleksia.png',
-                                        width: 26.w,
-                                        height: 26.w,
-                                      )),
+                                    borderRadius: BorderRadius.circular(8.0),
+                                    child: Icon(!isNavigationSound ? Icons.mic_off : Icons.mic),
+                                  ),
                                   Padding(
                                     padding: const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 0.0),
                                     child: Text(
-                                      'Disleksia',
+                                      'Navigasi Suara',
                                       textAlign: TextAlign.center,
                                       style: FlutterFlowTheme.of(context).bodyMedium.override(
                                             fontFamily: 'Inter',

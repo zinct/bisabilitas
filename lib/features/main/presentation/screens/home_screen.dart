@@ -191,7 +191,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   ),
                                                   child: Container(
                                                     width: 323.0.w,
-                                                    height: 146.0.h,
+                                                    height: 170.0.h,
                                                     decoration: BoxDecoration(
                                                       color: FlutterFlowTheme.of(context).secondaryBackground,
                                                       borderRadius: BorderRadius.circular(12.0),
@@ -388,7 +388,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           child: Container(
                             width: MediaQuery.sizeOf(context).width * 1.0,
-                            height: 290.h,
+                            height: 300.h,
                             decoration: BoxDecoration(
                               color: FlutterFlowTheme.of(context).secondaryBackground,
                               borderRadius: BorderRadius.circular(12.0),
@@ -403,6 +403,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                     width: MediaQuery.sizeOf(context).width * 1.0,
                                     height: 170.h,
                                     fit: BoxFit.cover,
+                                    errorBuilder: (context, error, stackTrace) {
+                                      return Image.network(
+                                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRKREcZ7HHA4nPfRJwXkrv0-i11G3uaxIGZVA&s",
+                                        width: MediaQuery.sizeOf(context).width * 1.0,
+                                        height: 170.h,
+                                        fit: BoxFit.cover,
+                                      );
+                                    },
                                   ),
                                 ),
                                 Expanded(

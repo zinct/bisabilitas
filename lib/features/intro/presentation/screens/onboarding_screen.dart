@@ -32,7 +32,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   void handleGoogleLogin() async {
     GoogleSignIn googleSignIn = GoogleSignIn(
-      clientId: '763870623181-4r6eeue1misgj899pp5abngk09njov06.apps.googleusercontent.com',
+      clientId: '763870623181-k7403j60brh0em56mfh756ete59rpgp5.apps.googleusercontent.com',
       serverClientId: '763870623181-u5pf5p0vsabto6nug2drhovc0e771nl0.apps.googleusercontent.com',
       scopes: <String>[
         'email',
@@ -64,7 +64,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
     final model = BaseModel.fromJson(response.data);
 
-    print(model);
     if (model.success ?? false) {
       // Store token to headers
       _api.setToken(model.data['token']);
@@ -72,7 +71,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       // Store token to local storage
       final box = await Hive.openBox(HIVE.databaseName);
       box.put(HIVE.tokenData, model.data['token']);
-      print(model.data['token']);
 
       Navigator.of(context).pushNamed(ROUTER.home);
     } else {
@@ -96,6 +94,27 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  SizedBox(height: 20.h),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text(
+                        'Lewati',
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.getFont(
+                          'Inter',
+                          fontSize: 12.0,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      TouchableOpacityWidget(
+                        child: Icon(Icons.keyboard_arrow_right),
+                        onTap: () {
+                          Navigator.of(context).pushReplacementNamed(ROUTER.home);
+                        },
+                      )
+                    ],
+                  ),
                   SizedBox(height: 50.h),
                   Align(
                     alignment: const AlignmentDirectional(0.0, 0.0),
@@ -264,6 +283,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                 ),
                               ),
                             ),
+                            SizedBox(height: 150.h),
                           ],
                         ),
                 ],
